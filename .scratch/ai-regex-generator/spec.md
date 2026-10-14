@@ -2,6 +2,8 @@
 
 Status: ready-for-agent
 
+Resolution: resolved
+
 Published: 2026-10-14
 
 Implementation: authorized on 2026-10-14 for the seven published core tickets. Use Next.js, TypeScript, Vercel, and Groq. Use Prettier and CRLF line endings; split components and CSS where useful. Do not deploy. Optional saved patterns and the cheatsheet remain outside the approved core scope.
@@ -179,9 +181,9 @@ The project contains initial evaluation logic, presets, a worker entry point, an
 
 ## Further Notes
 
-- The user confirmed all 20 presets and their required explanations, limitations, matching intent, and positive/negative example checks on 2026-10-14. The catalogue is incorporated into this specification. The expanded implementation is still pending.
+- The user confirmed all 20 presets and their required explanations, limitations, matching intent, and positive/negative example checks on 2026-10-14. The catalogue is incorporated into this specification. All seven approved core tickets and the requested layout revision are implemented.
 - Core requirements and the Next.js/TypeScript/Vercel/Groq stack are confirmed. Browser-local saving and the cheatsheet remain optional and are excluded from the seven-ticket implementation.
 - Existing source was an incomplete scaffold when implementation was authorized. Verify each completed ticket with its behavior-focused checks before resolving it.
 - Vercel Hobby is intended for personal, non-commercial use and has usage limits. Groq's free tier has model-specific and organization-level request/token limits. Availability and suitability must be rechecked before deployment. Sources: [Vercel Hobby](https://vercel.com/docs/plans/hobby) and [Groq rate limits](https://console.groq.com/docs/rate-limits).
 - The configured issue tracker is local Markdown under `.scratch/`, with the five default triage statuses. Setup was approved and applied on 2026-10-14. Specifications publish under the feature directory; implementation tickets publish as separate numbered files after breakdown approval. The GitHub remote is not the configured issue tracker.
-- Publishing a specification does not by itself resume the paused implementation or authorize deployment.
+- Implementation was explicitly authorized and completed on `codex/regex-integration`. Deployment remains outside the authorized scope.

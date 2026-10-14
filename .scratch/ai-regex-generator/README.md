@@ -18,7 +18,7 @@ Application implementation was authorized on 2026-10-14 using Next.js, TypeScrip
 
 ## Execution frontier
 
-When implementation is resumed, ticket 01 is the first ticket with no blocking ticket. Tickets 04 and 05 can proceed independently after 03 is complete. Work only tickets whose blockers are satisfied and whose applicable choices have been confirmed.
+All seven approved core tickets are resolved on `codex/regex-integration`, including the requested stacked layout, scrollable desktop right preset sidebar, and tablet/mobile preset drawer. The final Standards and Spec reviews have no remaining findings. No deployment was performed. Live Groq generation still requires an owner-provided server credential; deterministic provider tests verify the integration without one.
 
 ## Optional drafts
 
@@ -26,3 +26,7 @@ When implementation is resumed, ticket 01 is the first ticket with no blocking t
 - [09: JavaScript regex cheatsheet](../../docs/ticket-drafts/09-regex-cheatsheet.md).
 
 These remain proposals and were not published as approved core tickets.
+
+## Final verification
+
+On 2026-10-14, the assembled integration passed 54 unit/API tests, 28 browser workflow tests, TypeScript, the local production build, Prettier, and CRLF checks. Standards review: 0 remaining findings. Spec review: 0 remaining findings; the lookbehind explanation defect was corrected with regression coverage. Updated desktop, mobile, and drawer screenshots are retained locally under ignored output/playwright. Live Groq verification remains unavailable without a credential. No deployment.
