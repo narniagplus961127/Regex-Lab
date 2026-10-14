@@ -1,50 +1,54 @@
 # RegexLab
 
-A JavaScript regex playground built with Next.js 16.4 and TypeScript.
+A small tool for better patterns. Made to match.
 
-## Run locally
+Describe what you want to match, generate a JavaScript regular expression, and test it against your own text. Start from a preset or write a pattern yourself—no account required.
 
-Use Node.js 22 or newer (Node.js 24 LTS recommended for the installed AI SDK).
+## What you can do
 
-```sh
-npm ci
-npm run dev
-```
+- **Generate with AI:** explain your goal in plain language and add examples that should or should not match.
+- **Test as you type:** edit the pattern, flags, or test text to see highlighted matches and a live match count.
+- **Choose your matching intent:** find matches within text or validate the entire input.
+- **Explore 20 presets:** search common patterns for email addresses, URLs, phone formats, dates, numbers, and developer formats.
+- **Inspect the result:** view match positions, numbered and named capture groups, and passing or failing example checks.
+- **Understand and copy:** expand the explanation and syntax reference, then copy the effective regex or a JavaScript usage snippet directly from the regex panel.
 
-Visit http://localhost:3000. The playground works without an API key. Test text stays in the browser, in an isolated worker. Tests stop after 1.5 seconds; patterns accept up to 2,000 characters and test text up to 30,000. The first 500 matches are displayed, with clipping clearly identified.
+The desktop preset library has its own scrolling area and sticky filters. On tablet and mobile, open **Preset library** to browse in a drawer. The core workflow supports keyboard navigation.
 
-## Verify
+## Getting started
 
-```sh
-npm test
-npx playwright install chromium
-npm run test:e2e
-npm run typecheck
-npm run build
-npm run format:check
-npm run eol:check
-```
+1. Describe your pattern and click **Generate regex**, or open **Preset library** and load a starting point.
+2. Review the regular expression, choose your matching intent, and adjust the flags if needed.
+3. Enter your own text in **Test your text** to see what matches.
+4. Add positive and negative **Example checks** to check the behavior you expect. These examples also guide your next AI generation.
+5. Expand **Understand your pattern** for the explanation and limitations. Use **Copy regex** or **Copy JavaScript** when you are ready.
 
-Browser tests default to one worker to keep cold dev-server compilation and isolated regex-worker deadlines stable. Example-generation workflows can also run with `npx playwright test --config playwright.examples.config.ts` on IPv4 port 3106.
+For example, describe “Find order numbers starting with ORD followed by six digits.” Try `ORD123456` as a positive example and `ORD123` as a negative example, then test a larger sample such as `Your order is ORD123456` in find-matches mode.
 
-Use `npm run format` and `npm run eol:fix` after edits. All authored text uses CRLF. Run a production build locally with `npm run build` followed by `npm start`. The explicit webpack scripts bundle the isolated regex worker using Next.js worker support. No deployment is performed.
+## Presets
 
-## AI generation setup
+| Category        | Examples                                                                                      |
+| --------------- | --------------------------------------------------------------------------------------------- |
+| Everyday        | Email address, HTTP/HTTPS URL, domain name, US-style phone number, international phone format |
+| Validation      | Username, password format, URL slug, ASCII alphanumeric                                       |
+| Dates & numbers | ISO-style date, 24-hour time, integer, decimal number                                         |
+| Developer       | IPv4 address, UUID v4, hex color, semantic version                                            |
+| Text            | Whitespace runs, ASCII hashtag, file extension                                                |
 
-Visitors do not need an account or API key. The owner obtains a Groq key from [Groq Console](https://console.groq.com/keys), copies `.env.example` to `.env.local`, and fills in `GROQ_API_KEY`. Restart the dev server after changing configuration. Keep the key server-only: never prefix it with `NEXT_PUBLIC_`, commit it, or put it in a description. Only `GROQ_API_KEY` and `GROQ_MODEL` are read; without a key the local playground and presets remain usable.
+Loading a preset brings its pattern, settings, sample text, explanation, limitations, and example checks into the playground together. Presets describe supported formats; a date pattern, for example, does not guarantee that a date exists on the calendar.
 
-The default `GROQ_MODEL` is `openai/gpt-oss-20b`; `openai/gpt-oss-120b` also supports the strict structured output used here. Before choosing another model, verify [Groq strict structured output support](https://console.groq.com/docs/structured-outputs). Unsupported/retired model errors are shown as generation failures, never replaced by a fabricated AI result. Groq free access has model-specific usage quotas; review [Groq rate limits](https://console.groq.com/docs/rate-limits) and your console limits rather than assuming unlimited free generation.
+## Your text and AI
 
-Generation sends the description, current explicit example checks (text and whether each should match), matching intent, and selected flags to the server and Groq. Playground test text is never submitted. Examples are checked locally after applying the returned pattern and effective flags. Failing checks remain visible; revise examples or the description and generate again without losing playground text. There is no hidden repair or regeneration loop. The server validates the response structure, output bounds, and JavaScript syntax without executing generated regex against text. This does not guarantee that a pattern is accurate or fast; inspect it locally before use.
+Playground test text stays in your browser. When you click **Generate regex**, your description, explicit example checks, matching intent, and selected flags are sent to the server and Groq. Choose what to include in your description and examples.
 
-Limits: description 2,000 characters; up to 20 examples of 1,000 characters each (empty text allowed); streamed request body 140,000 bytes and 5 seconds; provider request 20 seconds with no automatic retries and at most 2,200 output tokens; pattern 2,000 characters; explanation 4,000 characters; up to eight limitation notes of 500 characters each. Requests are cancelled on client disconnect where the host propagates cancellation.
+AI generation depends on the site's configuration and provider availability. Presets, manual editing, and local testing remain available when AI is unavailable. AI results can be incorrect; review the explanation and test matching and non-matching inputs before using a pattern.
 
-Each running server instance shares a 20-request/minute generation budget and permits at most two concurrent provider calls across all visitors. These in-memory guards reset on restart and are independent across Vercel instances. They are basic safeguards, not a distributed quota or billing cap. Configure provider quotas and hosting protection appropriate to public traffic before publishing.
+## Playground limits
 
-## Vercel owner setup (no deployment performed)
+RegexLab uses JavaScript regular expressions. It supports global, ignore-case, multiline, dot-all, and Unicode flags. Whole-input validation ignores global iteration, and copied output preserves the selected matching intent.
 
-This is a Next.js project with the default build command `npm run build`. When you choose to host it on Vercel, select Node.js 24, add `GROQ_API_KEY` as a server environment secret in only the intended environment, and set `GROQ_MODEL` if changing the default. Do not share production secrets with unrelated preview branches. Redeployment is required for updated environment values. No Vercel provisioning or deployment is part of this implementation.
+Local tests stop after 1.5 seconds to keep the interface responsive. Patterns accept up to 2,000 characters, playground text up to 30,000 characters, and example checks up to 20 inputs of 1,000 characters each. Results show up to 500 matches and identify when the list is clipped. Copied JavaScript runs in your own environment without the playground's time limit.
 
-[Vercel Hobby](https://vercel.com/docs/plans/hobby) is restricted to personal, non-commercial use and has usage limits. Review the current terms for commercial projects. Hosting and AI free tiers have separate limits.
+## For developers
 
-Generation tests use deterministic provider transport fixtures only in tests. A real-provider smoke check needs an owner-provided credential; when no key is present that external boundary remains unverified. To smoke-check after local configuration, write a short description such as "Find six-digit order numbers", generate, inspect the explanation, and test matching and non-matching inputs locally.
+For local installation, AI configuration, verification commands, and hosting instructions, see the [development guide](docs/development.md).
