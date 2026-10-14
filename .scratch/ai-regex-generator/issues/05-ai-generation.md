@@ -2,7 +2,7 @@
 
 **What to build:** A visitor writes a description, chooses matching intent and flags, and generates a pattern through a real server-side AI request. The returned pattern and explanation appear in the existing playground, ready for local inspection and copying.
 
-**Blocked by:** 03 — Understand and copy the current pattern. The provider/stack proposal must be confirmed before implementation of the integration.
+**Blocked by:** 03 — Understand and copy the current pattern.
 
 **Status:** ready-for-agent
 
@@ -22,3 +22,5 @@
 ## Comments
 
 Published on 2026-10-14 after approval of the seven core tickets. Implementation remains paused; publication does not authorize implementation or deployment.
+
+Implementation authorized on 2026-10-14 using Next.js, TypeScript, Vercel, and Groq, with Prettier and CRLF. Provider/stack confirmation is satisfied. Do not deploy.

@@ -125,7 +125,7 @@ Each preset must include its required explanation, limitations, matching intent,
 
 The catalogue is a practical selection rather than a measured popularity ranking. Supporting sources: [validator.js catalogue](https://github.com/validatorjs/validator.js#validators), [regular expression examples](https://www.regular-expressions.info/examples.html), and [Semantic Versioning](https://semver.org/).
 
-### Proposed technical approach
+### Confirmed technical approach
 
 The user confirmed the stack and implementation of all seven published core tickets on 2026-10-14. Implementation must preserve the confirmed user behavior and acceptance criteria below.
 
@@ -143,7 +143,7 @@ The user confirmed the stack and implementation of all seven published core tick
 
 ## Testing Decisions
 
-### Proposed primary test seam
+### Primary test seam
 
 Use the browser-visible user workflow as the primary acceptance seam: describe or load a pattern, edit it, enter test text, inspect results and explanation, and copy it. Test externally observable results rather than React state, worker implementation, CSS class names, or component structure.
 
