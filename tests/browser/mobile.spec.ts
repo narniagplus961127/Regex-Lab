@@ -49,7 +49,7 @@ test("mobile keyboard visitor loads a preset and returns to editing and copying"
   await page.getByRole("button", { name: "Copy regex", exact: true }).focus();
   await page.keyboard.press("Enter");
   await expect(
-    page.getByRole("region", { name: "Explanation and copying" }),
+    page.getByRole("region", { name: "Copy current pattern" }),
   ).toContainText(/copied|Clipboard unavailable/);
   await expect(page.getByLabel("Regular expression")).toBeEnabled();
   expect(
@@ -112,8 +112,9 @@ test("mobile example-guided generation supports keyboard editing, statuses and c
   await expect(
     page.getByRole("region", { name: "Match details" }),
   ).toContainText('number: "123"');
+  await page.getByText("Understand your pattern", { exact: true }).click();
   await expect(
-    page.getByRole("region", { name: "Explanation and copying" }),
+    page.getByRole("region", { name: "Pattern explanation" }),
   ).toContainText("Finds order numbers.");
   await page.getByLabel("Example 1 text").fill("ORD-12");
   await expect(
@@ -128,7 +129,7 @@ test("mobile example-guided generation supports keyboard editing, statuses and c
     .focus();
   await page.keyboard.press("Enter");
   await expect(
-    page.getByRole("region", { name: "Explanation and copying" }),
+    page.getByRole("region", { name: "Copy current pattern" }),
   ).toContainText(/copied|Clipboard unavailable/);
 });
 
@@ -187,8 +188,13 @@ test("desktop keyboard tab order and mobile screenshots", async ({ page }) => {
   await expect(
     page.getByRole("region", { name: "Live text playground" }),
   ).toContainText("2 matches found");
+  await expect(
+    page.getByText("AI is not configured.", { exact: false }),
+  ).toBeVisible();
   await page.getByLabel("Describe your pattern").focus();
-  // Empty description disables Generate; next controls are the editable pattern and intent.
+  // Empty description disables Generate; owner guidance is a disclosure before the pattern.
+  await page.keyboard.press("Tab");
+  await expect(page.getByText("Owner setup", { exact: true })).toBeFocused();
   await page.keyboard.press("Tab");
   await expect(page.getByLabel("Regular expression")).toBeFocused();
   await page.keyboard.press("Tab");

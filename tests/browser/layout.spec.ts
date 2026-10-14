@@ -14,12 +14,27 @@ test("desktop stacks generation and testing beside an independently scrolling li
     .getByRole("region", { name: "Live text playground" })
     .boundingBox();
   const dock = await library.boundingBox();
+  const header = await page.getByRole("banner").boundingBox();
+  const footer = await page.getByRole("contentinfo").boundingBox();
+  expect(footer!.width).toBe(header!.width);
+  expect(footer!.x).toBe(header!.x);
+  expect(dock!.y - header!.height).toBeGreaterThanOrEqual(24);
+  await expect(
+    page.getByRole("region", { name: "Pattern explanation" }),
+  ).not.toBeVisible();
+  await page.getByText("Understand your pattern", { exact: true }).click();
+  await expect(
+    page.getByRole("region", { name: "Pattern explanation" }),
+  ).toBeVisible();
   expect(pattern!.y).toBeGreaterThan(generator!.y + generator!.height - 1);
   expect(text!.y).toBeGreaterThan(pattern!.y);
   expect(dock!.x).toBeGreaterThan(generator!.x + generator!.width - 1);
+  const beforeScroll = await page.evaluate(() => scrollY);
   await library.evaluate((el) => (el.scrollTop = 700));
   expect(await library.evaluate((el) => el.scrollTop)).toBeGreaterThan(0);
-  expect(await page.evaluate(() => scrollY)).toBe(0);
+  await expect(library.getByLabel("Search presets")).toBeInViewport();
+  await expect(library.getByLabel("Preset category")).toBeInViewport();
+  expect(await page.evaluate(() => scrollY)).toBe(beforeScroll);
 });
 
 test("tablet drawer traps keyboard focus, preserves edits and restores trigger on Escape and backdrop", async ({
@@ -92,8 +107,14 @@ test("mobile drawer keeps background fixed while its preset list scrolls", async
   await page.mouse.wheel(0, 900);
   await page.waitForTimeout(150);
   expect(await page.evaluate(() => scrollY)).toBe(0);
-  await dialog.evaluate((el) => (el.scrollTop = 1000));
-  expect(await dialog.evaluate((el) => el.scrollTop)).toBeGreaterThan(0);
+  const drawerLibrary = dialog.getByRole("region", { name: "Preset library" });
+  await drawerLibrary.evaluate((el) => (el.scrollTop = 1000));
+  expect(await drawerLibrary.evaluate((el) => el.scrollTop)).toBeGreaterThan(0);
+  await expect(dialog.getByLabel("Search presets")).toBeInViewport();
+  await expect(dialog.getByLabel("Preset category")).toBeInViewport();
+  await expect(
+    dialog.getByRole("button", { name: "Close preset library" }),
+  ).toBeInViewport();
   await page.keyboard.press("Escape");
   await expect(dialog).not.toBeVisible();
   await page.mouse.move(200, 450);

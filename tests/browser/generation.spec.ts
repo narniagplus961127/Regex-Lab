@@ -32,6 +32,7 @@ test("generate from description while preserving private playground text", async
     .click();
   await expect(page.getByLabel("Regular expression")).toHaveValue("[0-9]+");
   await expect(page.getByLabel("Test text")).toHaveValue("private 123");
+  await page.getByText("Understand your pattern", { exact: true }).click();
   await expect(
     page.getByText("Finds ASCII digits.", { exact: true }),
   ).toBeVisible();

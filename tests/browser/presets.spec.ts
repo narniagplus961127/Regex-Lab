@@ -3,6 +3,7 @@ test("searches, resets, and loads a preset as a complete editable playground", a
   page,
 }) => {
   await page.goto("/");
+  await page.getByText("Understand your pattern", { exact: true }).click();
   const library = page.getByRole("region", { name: "Preset library" });
   await expect(library.getByRole("button", { name: /^Load / })).toHaveCount(20);
   await library.getByLabel("Search presets").fill("subdomains");
@@ -21,7 +22,7 @@ test("searches, resets, and loads a preset as a complete editable playground", a
     page.getByRole("region", { name: "Example checks" }),
   ).toContainText("2 / 2 checks passing");
   await expect(
-    page.getByRole("region", { name: "Explanation and copying" }),
+    page.getByRole("region", { name: "Pattern explanation" }),
   ).toContainText("00–23");
   await page.getByLabel("Regular expression").fill("never");
   await expect(
@@ -48,6 +49,7 @@ test("every preset loads matching intent, sample, limits, and passing checks wit
   page,
 }) => {
   await page.goto("/");
+  await page.getByText("Understand your pattern", { exact: true }).click();
   const library = page.getByRole("region", { name: "Preset library" });
   const setups: [string, string, "find" | "validate", string][] = [
     ["Email address", "hello@example.com", "find", "deliverability"],
@@ -91,7 +93,7 @@ test("every preset loads matching intent, sample, limits, and passing checks wit
       page.getByRole("region", { name: "Example checks" }),
     ).toContainText("2 / 2 checks passing");
     await expect(
-      page.getByRole("region", { name: "Explanation and copying" }),
+      page.getByRole("region", { name: "Pattern explanation" }),
     ).toContainText(limit);
     await expect(
       page.getByRole("button", { name: "Copy regex", exact: true }),

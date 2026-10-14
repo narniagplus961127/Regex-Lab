@@ -1,6 +1,5 @@
 "use client";
 import { useRef, useState } from "react";
-import { Terminal } from "lucide-react";
 import { FLAG_OPTIONS, type Mode, type Example } from "@/lib/regex";
 import { useRegexTest } from "@/hooks/use-regex-test";
 import { TestEditor } from "./test-editor";
@@ -8,6 +7,7 @@ import { MatchesView } from "./matches-view";
 import { ExampleChecks } from "./example-checks";
 import { GeneratorPanel } from "./generator-panel";
 import { WorkbenchLayout } from "./workbench-layout";
+import { PatternCopy } from "./pattern-copy";
 import { PatternDetails } from "./pattern-details";
 import { type PatternExplanation } from "@/lib/pattern-export";
 export function Playground() {
@@ -165,6 +165,14 @@ export function Playground() {
                   ? "Global iteration is ignored in validation mode."
                   : "Pattern limit: 2,000 characters. Enable global to find every match."}
               </p>
+              <PatternCopy pattern={pattern} flags={flags} mode={mode}>
+                <PatternDetails
+                  pattern={pattern}
+                  flags={flags}
+                  mode={mode}
+                  explanation={explanation}
+                />
+              </PatternCopy>
             </section>
             <TestEditor
               text={text}
@@ -173,12 +181,6 @@ export function Playground() {
               testing={testing}
             />
             <MatchesView result={result} testing={testing} />
-            <PatternDetails
-              pattern={pattern}
-              flags={flags}
-              mode={mode}
-              explanation={explanation}
-            />
             <ExampleChecks
               examples={examples}
               onChange={setExamples}
@@ -187,12 +189,6 @@ export function Playground() {
             />
           </div>
         </div>
-        <footer>
-          <span>
-            <Terminal size={14} /> A small tool for better patterns.
-          </span>
-          <span>Made to match.</span>
-        </footer>
       </div>
     </WorkbenchLayout>
   );

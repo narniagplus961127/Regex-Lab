@@ -31,42 +31,44 @@ export function PresetLibrary({
       <p className="limit-note">
         Load a complete example, then make it your own. No AI key required.
       </p>
-      <div className={styles.filters}>
-        <label>
-          Search presets
-          <input
-            id={`${idPrefix}-search`}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Try email or dates"
-          />
-        </label>
-        <label>
-          Preset category
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+      <div className={styles.stickyFilters}>
+        <div className={styles.filters}>
+          <label>
+            Search presets
+            <input
+              id={`${idPrefix}-search`}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Try email or dates"
+            />
+          </label>
+          <label>
+            Preset category
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option>All</option>
+              {PRESET_CATEGORIES.map((c) => (
+                <option key={c}>{c}</option>
+              ))}
+            </select>
+          </label>
+          <button
+            className="flag-button"
+            onClick={() => {
+              setQuery("");
+              setCategory("All");
+            }}
           >
-            <option>All</option>
-            {PRESET_CATEGORIES.map((c) => (
-              <option key={c}>{c}</option>
-            ))}
-          </select>
-        </label>
-        <button
-          className="flag-button"
-          onClick={() => {
-            setQuery("");
-            setCategory("All");
-          }}
-        >
-          Reset filters
-        </button>
+            Reset filters
+          </button>
+        </div>
+        <p className="limit-note" aria-live="polite">
+          {visible.length} presets
+          {loaded ? ` · Loaded ${loaded} into the playground.` : ""}
+        </p>
       </div>
-      <p className="limit-note" aria-live="polite">
-        {visible.length} presets
-        {loaded ? ` · Loaded ${loaded} into the playground.` : ""}
-      </p>
       {visible.length === 0 ? (
         <p className={styles.empty}>
           No presets match your search and category. Reset filters to browse all
@@ -76,19 +78,21 @@ export function PresetLibrary({
         <div className={styles.cards}>
           {visible.map((p) => (
             <article key={p.id} className={styles.card}>
-              <span className={styles.category}>{p.category}</span>
+              <div className={styles.cardHeader}>
+                <span className={styles.category}>{p.category}</span>
+                <button
+                  className="flag-button"
+                  aria-label={`Load ${p.name}`}
+                  onClick={() => {
+                    onSelect(p);
+                    setLoaded(p.name);
+                  }}
+                >
+                  Load pattern <span aria-hidden="true">↗</span>
+                </button>
+              </div>
               <h3>{p.name}</h3>
               <p>{p.description}</p>
-              <button
-                className="flag-button"
-                aria-label={`Load ${p.name}`}
-                onClick={() => {
-                  onSelect(p);
-                  setLoaded(p.name);
-                }}
-              >
-                Load pattern <span aria-hidden="true">↗</span>
-              </button>
             </article>
           ))}
         </div>

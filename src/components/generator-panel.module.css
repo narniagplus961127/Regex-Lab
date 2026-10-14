@@ -88,3 +88,14 @@
   font-size: 13px;
   line-height: 1.5;
 }
+
+.setup p {
+  margin: 0 0 8px;
+}
+.setup summary {
+  cursor: pointer;
+  color: var(--lime);
+}
+.setup details p {
+  margin-top: 10px;
+}

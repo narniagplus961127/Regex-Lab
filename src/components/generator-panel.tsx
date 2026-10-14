@@ -24,7 +24,7 @@ export function GeneratorPanel({
     >
       <div className="panel-heading">
         <h2>
-          <Sparkles size={18} /> Describe it. Generate it.
+          <Sparkles size={18} /> AI regex generator
         </h2>
       </div>
       <label htmlFor="description" className={styles.label}>
@@ -53,11 +53,16 @@ export function GeneratorPanel({
         test text stays in your browser.
       </p>
       {configured === false && (
-        <p className={styles.setup}>
-          AI is not configured. Owner: add GROQ_API_KEY to .env.local locally,
-          or the server environment on Vercel, then restart. Local testing works
-          without a key.
-        </p>
+        <div className={styles.setup}>
+          <p>AI is not configured. Presets and local testing still work.</p>
+          <details>
+            <summary>Owner setup</summary>
+            <p>
+              Add GROQ_API_KEY to .env.local locally, or the server environment
+              on Vercel, then restart.
+            </p>
+          </details>
+        </div>
       )}
       <div className={styles.actions}>
         <button

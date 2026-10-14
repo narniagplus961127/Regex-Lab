@@ -1,4 +1,5 @@
 .library {
+  overflow: visible;
   margin-top: 0;
   padding: 0;
   border: 0;
@@ -61,7 +62,7 @@
   color: var(--muted);
   font-size: 12px;
   line-height: 1.6;
-  margin: 0 0 18px;
+  margin: 0;
   flex: 1;
 }
 .empty {
@@ -100,4 +101,25 @@
 }
 .filters button {
   align-self: start;
+}
+
+.stickyFilters {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 8px 0 12px;
+  background: #141617;
+}
+.cardHeader {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.cardHeader button {
+  flex-shrink: 0;
+}
+.category {
+  line-height: 1.5;
 }

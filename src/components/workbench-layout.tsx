@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Braces, Library, ShieldCheck, X } from "lucide-react";
+import { Braces, Library, Terminal, X } from "lucide-react";
 import { PresetLibrary } from "./preset-library";
 import type { Preset } from "@/lib/presets";
 import styles from "./workbench-layout.module.css";
@@ -56,12 +56,8 @@ export function WorkbenchLayout({
             <Braces />
           </span>
           Regex<span>Lab</span>
-          <small>BETA</small>
         </a>
         <div className={styles.headerActions}>
-          <span className={styles.engine}>
-            <span className="status-dot" /> JavaScript engine
-          </span>
           <button
             ref={trigger}
             className={styles.libraryButton}
@@ -143,10 +139,12 @@ export function WorkbenchLayout({
           />
         )}
       </dialog>
-      <p className={styles.privacy}>
-        <ShieldCheck size={14} /> Private by default. Your playground test text
-        stays in this browser.
-      </p>
+      <footer className={styles.footer}>
+        <span>
+          <Terminal size={14} /> A small tool for better patterns.
+        </span>
+        <span>Made to match.</span>
+      </footer>
     </div>
   );
 }
