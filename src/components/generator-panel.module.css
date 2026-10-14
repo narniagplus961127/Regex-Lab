@@ -1,0 +1,57 @@
+.panel {
+  padding: 24px;
+  align-self: start;
+}
+.label {
+  display: block;
+  font-size: 13px;
+  margin: 18px 0 10px;
+  font-weight: 600;
+}
+.panel textarea {
+  width: 100%;
+  min-height: 150px;
+  resize: vertical;
+  padding: 14px;
+  color: #eff2eb;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #101212;
+  line-height: 1.6;
+}
+.note,
+.privacy,
+.setup {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.privacy {
+  margin: 18px 0;
+}
+.setup {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+.generate {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: var(--lime);
+  color: #17200d;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+.error {
+  color: #ffb7aa;
+  font-size: 13px;
+  line-height: 1.6;
+}
