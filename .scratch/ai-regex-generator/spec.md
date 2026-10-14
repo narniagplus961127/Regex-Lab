@@ -4,7 +4,7 @@ Status: ready-for-agent
 
 Published: 2026-10-14
 
-Implementation: paused pending the user's instruction to resume. Core behavior and all 20 presets are confirmed. The stack, optional saved patterns and cheatsheet, and testing approach remain proposals; publication does not approve those choices or authorize implementation/deployment.
+Implementation: authorized on 2026-10-14 for the seven published core tickets. Use Next.js, TypeScript, Vercel, and Groq. Use Prettier and CRLF line endings; split components and CSS where useful. Do not deploy. Optional saved patterns and the cheatsheet remain outside the approved core scope.
 
 ## Problem Statement
 
@@ -127,7 +127,7 @@ The catalogue is a practical selection rather than a measured popularity ranking
 
 ### Proposed technical approach
 
-These choices have been discussed and partially scaffolded, but the user requested a consolidated requirements review before further implementation. They remain proposals rather than newly confirmed requirements.
+The user confirmed the stack and implementation of all seven published core tickets on 2026-10-14. Implementation must preserve the confirmed user behavior and acceptance criteria below.
 
 - Use Next.js, React, and TypeScript, with Vercel hosting and Groq accessed through the Vercel AI SDK. The user suggested Vercel and Groq as affordable options and allowed alternatives.
 - Do not require a database for the core workflow. If approved, saved patterns use browser-local storage without cross-device synchronization.
@@ -147,7 +147,7 @@ These choices have been discussed and partially scaffolded, but the user request
 
 Use the browser-visible user workflow as the primary acceptance seam: describe or load a pattern, edit it, enter test text, inspect results and explanation, and copy it. Test externally observable results rather than React state, worker implementation, CSS class names, or component structure.
 
-This seam is proposed for the user's confirmation; it was not previously discussed as an agreed testing decision.
+The user approved the seven tickets containing these behavior-focused acceptance checks and authorized implementing them. Use the browser workflow as the primary acceptance boundary and the existing local-evaluation interface for engine edge cases; deterministic provider responses are test-only.
 
 - Exercise preset loading, manual editing, flags, whole-input validation, match highlighting, capture groups, example checks, copy/export behavior, invalid-pattern errors, and responsive keyboard interaction through the interface.
 - At the external AI boundary, use deterministic provider responses for repeatable tests of request contents, successful generation, invalid output, rate-limit errors, missing configuration, and timeouts. Such fixtures are test-only; production must call the real configured provider and never silently substitute a fake generator.
@@ -180,8 +180,8 @@ The project contains initial evaluation logic, presets, a worker entry point, an
 ## Further Notes
 
 - The user confirmed all 20 presets and their required explanations, limitations, matching intent, and positive/negative example checks on 2026-10-14. The catalogue is incorporated into this specification. The expanded implementation is still pending.
-- Core requirements were confirmed across several interview rounds. The proposed stack, local saving, and cheatsheet remain pending consolidated confirmation after the user asked to review requirements before further building.
-- Existing source is an incomplete scaffold, not a finished application or evidence that any user story passes. Continue from it only after implementation is authorized again.
+- Core requirements and the Next.js/TypeScript/Vercel/Groq stack are confirmed. Browser-local saving and the cheatsheet remain optional and are excluded from the seven-ticket implementation.
+- Existing source was an incomplete scaffold when implementation was authorized. Verify each completed ticket with its behavior-focused checks before resolving it.
 - Vercel Hobby is intended for personal, non-commercial use and has usage limits. Groq's free tier has model-specific and organization-level request/token limits. Availability and suitability must be rechecked before deployment. Sources: [Vercel Hobby](https://vercel.com/docs/plans/hobby) and [Groq rate limits](https://console.groq.com/docs/rate-limits).
 - The configured issue tracker is local Markdown under `.scratch/`, with the five default triage statuses. Setup was approved and applied on 2026-10-14. Specifications publish under the feature directory; implementation tickets publish as separate numbered files after breakdown approval. The GitHub remote is not the configured issue tracker.
 - Publishing a specification does not by itself resume the paused implementation or authorize deployment.
