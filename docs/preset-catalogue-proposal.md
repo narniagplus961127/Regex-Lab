@@ -15,28 +15,28 @@ Sources:
 
 ## Confirmed catalogue
 
-| Category | Preset | Defined scope | Initial source |
-| --- | --- | --- | --- |
-| Everyday | Email address | Practical common email format; not every RFC-valid address and not proof of delivery | Exists |
-| Everyday | HTTP/HTTPS URL | Extract links with an explicit scheme; not complete URL validation | Exists |
-| Everyday | Domain name | ASCII DNS-style name; explicitly document subdomains, label limits, and internationalized-name handling | New |
-| Everyday | US-style phone number | Seven- or ten-digit formatting; explicitly label its regional scope | Exists; rename clearly |
-| Everyday | International phone format | E.164-shaped input with a leading plus and bounded digits; not country allocation or subscriber validation | New |
-| Validation | Username | Starts with an ASCII letter, 3–20 characters, letters/digits/underscore | Exists |
-| Validation | Password format | At least 8 non-whitespace characters with lowercase, uppercase, and a digit; not a strength assessment | Exists; label as format check |
-| Validation | URL slug | Lowercase ASCII letters/digits with single hyphens between segments | Exists |
-| Validation | ASCII alphanumeric | Nonempty input containing only ASCII letters and digits | New |
-| Dates & numbers | ISO-style date | YYYY-MM-DD with basic month/day ranges; no full calendar validation | Exists |
-| Dates & numbers | 24-hour time | HH:MM, hours 00–23 and minutes 00–59 | New |
-| Dates & numbers | Integer | Optional minus sign followed by decimal digits; excludes decimals and exponents | New |
-| Dates & numbers | Decimal number | Optional minus sign, digits, and an optional fractional part; excludes exponents and grouping commas | Exists |
-| Developer | IPv4 address | Four octets from 0–255; exclude leading zeros | Exists |
-| Developer | UUID v4 | Canonical hyphenated hexadecimal UUID with version-4 and RFC-variant bits | New |
-| Developer | Hex color | #RGB or #RRGGBB; excludes alpha variants | Exists |
-| Developer | Semantic version | SemVer 2.0.0 core, optional prerelease, and optional build metadata | New |
-| Text | Whitespace runs | One or more whitespace characters, including tabs and newlines | New |
-| Text | ASCII hashtag | # followed by explicitly documented ASCII letters/digits/underscore; not all social-platform or Unicode hashtag rules | New |
-| Text | File extension | A filename ending in .jpg, .jpeg, .png, or .pdf, ignoring case; not MIME/content verification | New |
+| Category        | Preset                     | Defined scope                                                                                                         | Initial source                |
+| --------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| Everyday        | Email address              | Practical common email format; not every RFC-valid address and not proof of delivery                                  | Exists                        |
+| Everyday        | HTTP/HTTPS URL             | Extract links with an explicit scheme; not complete URL validation                                                    | Exists                        |
+| Everyday        | Domain name                | ASCII DNS-style name; explicitly document subdomains, label limits, and internationalized-name handling               | New                           |
+| Everyday        | US-style phone number      | Seven- or ten-digit formatting; explicitly label its regional scope                                                   | Exists; rename clearly        |
+| Everyday        | International phone format | E.164-shaped input with a leading plus and bounded digits; not country allocation or subscriber validation            | New                           |
+| Validation      | Username                   | Starts with an ASCII letter, 3–20 characters, letters/digits/underscore                                               | Exists                        |
+| Validation      | Password format            | At least 8 non-whitespace characters with lowercase, uppercase, and a digit; not a strength assessment                | Exists; label as format check |
+| Validation      | URL slug                   | Lowercase ASCII letters/digits with single hyphens between segments                                                   | Exists                        |
+| Validation      | ASCII alphanumeric         | Nonempty input containing only ASCII letters and digits                                                               | New                           |
+| Dates & numbers | ISO-style date             | YYYY-MM-DD with basic month/day ranges; no full calendar validation                                                   | Exists                        |
+| Dates & numbers | 24-hour time               | HH:MM, hours 00–23 and minutes 00–59                                                                                  | New                           |
+| Dates & numbers | Integer                    | Optional minus sign followed by decimal digits; excludes decimals and exponents                                       | New                           |
+| Dates & numbers | Decimal number             | Optional minus sign, digits, and an optional fractional part; excludes exponents and grouping commas                  | Exists                        |
+| Developer       | IPv4 address               | Four octets from 0–255; exclude leading zeros                                                                         | Exists                        |
+| Developer       | UUID v4                    | Canonical hyphenated hexadecimal UUID with version-4 and RFC-variant bits                                             | New                           |
+| Developer       | Hex color                  | #RGB or #RRGGBB; excludes alpha variants                                                                              | Exists                        |
+| Developer       | Semantic version           | SemVer 2.0.0 core, optional prerelease, and optional build metadata                                                   | New                           |
+| Text            | Whitespace runs            | One or more whitespace characters, including tabs and newlines                                                        | New                           |
+| Text            | ASCII hashtag              | # followed by explicitly documented ASCII letters/digits/underscore; not all social-platform or Unicode hashtag rules | New                           |
+| Text            | File extension             | A filename ending in .jpg, .jpeg, .png, or .pdf, ignoring case; not MIME/content verification                         | New                           |
 
 This retains the existing 10 starting points and adds 10 confirmed catalogue requirements. The new patterns have not yet been implemented.
 

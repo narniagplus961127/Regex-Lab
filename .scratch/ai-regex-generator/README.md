@@ -6,15 +6,15 @@ Application implementation remains paused. The proposed provider/stack choices r
 
 ## Approved core tickets
 
-| Ticket | Deliverable | Blocked by |
-| --- | --- | --- |
-| [01: Live playground](issues/01-live-playground.md) | Edit and safely test a pattern live | None |
-| [02: Validation and checks](issues/02-validation-and-checks.md) | Validate entire inputs, inspect captures, and evaluate examples | 01 |
-| [03: Explanation and copy](issues/03-explanation-and-copy.md) | Understand and export the current pattern consistently | 02 |
-| [04: Twenty presets](issues/04-twenty-presets.md) | Search and load all 20 complete preset examples | 03 |
-| [05: AI generation](issues/05-ai-generation.md) | Generate a pattern from a description through a real provider | 03; provider/stack confirmation |
-| [06: Example-guided generation](issues/06-example-guided-generation.md) | Generate using explicit positive and negative examples | 05 |
-| [07: Mobile and keyboard workflows](issues/07-mobile-and-keyboard.md) | Complete both full workflows on mobile and by keyboard | 04, 06 |
+| Ticket                                                                  | Deliverable                                                     | Blocked by                      |
+| ----------------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------- |
+| [01: Live playground](issues/01-live-playground.md)                     | Edit and safely test a pattern live                             | None                            |
+| [02: Validation and checks](issues/02-validation-and-checks.md)         | Validate entire inputs, inspect captures, and evaluate examples | 01                              |
+| [03: Explanation and copy](issues/03-explanation-and-copy.md)           | Understand and export the current pattern consistently          | 02                              |
+| [04: Twenty presets](issues/04-twenty-presets.md)                       | Search and load all 20 complete preset examples                 | 03                              |
+| [05: AI generation](issues/05-ai-generation.md)                         | Generate a pattern from a description through a real provider   | 03; provider/stack confirmation |
+| [06: Example-guided generation](issues/06-example-guided-generation.md) | Generate using explicit positive and negative examples          | 05                              |
+| [07: Mobile and keyboard workflows](issues/07-mobile-and-keyboard.md)   | Complete both full workflows on mobile and by keyboard          | 04, 06                          |
 
 ## Execution frontier
 
