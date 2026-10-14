@@ -6,10 +6,21 @@ import { useRegexTest } from "@/hooks/use-regex-test";
 import { TestEditor } from "./test-editor";
 import { MatchesView } from "./matches-view";
 import { ExampleChecks } from "./example-checks";
+import { PatternDetails } from "./pattern-details";
+import { type PatternExplanation } from "@/lib/pattern-export";
 export function Playground() {
   const [pattern, setPattern] = useState(
     "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b",
   );
+  const [explanation, setExplanation] = useState<PatternExplanation>({
+    pattern: "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b",
+    flags: "gi",
+    mode: "find",
+    summary: "Finds email-like addresses in text, ignoring letter case.",
+    limitations: [
+      "This practical example does not prove an address exists or cover every valid email format.",
+    ],
+  });
   const [examples, setExamples] = useState<Example[]>([]);
   const [mode, setMode] = useState<Mode>("find");
   const [flags, setFlags] = useState("gi");
@@ -162,6 +173,12 @@ export function Playground() {
                 testing={testing}
               />
               <MatchesView result={result} testing={testing} />
+              <PatternDetails
+                pattern={pattern}
+                flags={flags}
+                mode={mode}
+                explanation={explanation}
+              />
               <ExampleChecks
                 examples={examples}
                 onChange={setExamples}

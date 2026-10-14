@@ -63,10 +63,11 @@ export function validatePattern(pattern: string, flags: string) {
   }
 }
 
-function makeRegex(pattern: string, flags: string, mode: Mode) {
+export function effectiveRegex(pattern: string, flags: string, mode: Mode) {
+  validatePattern(pattern, flags);
   // The end assertion is strict even with multiline mode or a trailing newline.
   return new RegExp(
-    mode === "validate" ? `^(?:${pattern})(?![\\s\\S])` : pattern,
+    mode === "validate" ? `(?<![\\s\\S])(?:${pattern})(?![\\s\\S])` : pattern,
     mode === "validate" ? flags.replace("g", "") : flags,
   );
 }
@@ -84,7 +85,7 @@ export function evaluateRegex(request: TestRequest): TestResult {
       throw new Error(
         "Test text is limited to 30,000 characters and 20 examples of 1,000 characters each.",
       );
-    const regex = makeRegex(pattern, flags, mode);
+    const regex = effectiveRegex(pattern, flags, mode);
     const matches: RegexMatch[] = [];
     let match: RegExpExecArray | null;
     let truncated = false;
@@ -117,7 +118,7 @@ export function evaluateRegex(request: TestRequest): TestResult {
       }
     }
     const exampleResults = examples.map((example) => {
-      const candidate = makeRegex(pattern, flags, mode).exec(example.text);
+      const candidate = effectiveRegex(pattern, flags, mode).exec(example.text);
       const matched =
         candidate !== null &&
         (mode === "find" ||
@@ -157,14 +158,15 @@ export function explainPattern(pattern: string): PatternPart[] {
   const parts: PatternPart[] = [];
   const tokens =
     pattern.match(
-      /\[(?:\\.|[^\]\\])*\]|\\[pP]\{[^}]+\}|\\.|\(\?<[^>]+>|\(\?[=:!]|\(\?<[=!]|\(\?:|\{\d+(?:,\d*)?\}[?]?|[+*?][?]?|[()^$.|]|[^\\[()^$.|+*?{}]+|./g,
+      /\[(?:\\.|[^\]\\])*\]|\\(?:[pP]\{[^}]+\}|u\{[0-9a-fA-F]+\}|u[0-9a-fA-F]{4}|x[0-9a-fA-F]{2}|c[A-Za-z]|k<[^>]+>|[0-9]+|.)|\(\?<[^>]+>|\(\?[=:!]|\(\?<[=!]|\(\?:|\{\d+(?:,\d*)?\}[?]?|[+*?][?]?|[()^$.|]|[^\\[()^$.|+*?{}]+|./g,
     ) ?? [];
   const meanings: Record<string, string> = {
     "^": "Start of the input (or line with m).",
-    $: "End of the input (or line with m).",
+    $: "End of input, also before a final line terminator; line boundaries with m.",
     "\\d": "A digit from 0 to 9.",
     "\\D": "A character that is not a digit.",
-    "\\w": "A word character: letters, digits, or underscore.",
+    "\\w":
+      "An ASCII letter, digit, or underscore; Unicode-aware case folding can add characters with both i and u.",
     "\\W": "A non-word character.",
     "\\s": "A whitespace character, including spaces and newlines.",
     "\\S": "A character that is not whitespace.",
@@ -184,6 +186,7 @@ export function explainPattern(pattern: string): PatternPart[] {
     "|": "Choose between alternatives.",
     "\\n": "A newline character.",
     "\\t": "A tab character.",
+    "\\r": "A carriage return character.",
   };
   for (const token of tokens) {
     let meaning = meanings[token];
@@ -191,18 +194,29 @@ export function explainPattern(pattern: string): PatternPart[] {
       meaning = token.startsWith("[^")
         ? "One character outside this character set."
         : "One character from this character set.";
-    if (!meaning && token.startsWith("{"))
-      meaning = `Repeat the preceding element ${token.replace(/[{}?]/g, "").replace(",", " to ")} times${token.endsWith("?") ? ", taking as few as possible" : ""}.`;
+    if (!meaning && token.startsWith("{")) {
+      const bounds = token.replace(/[{}?]/g, "").split(",");
+      const count =
+        bounds.length === 1
+          ? `exactly ${bounds[0]}`
+          : bounds[1] === ""
+            ? `at least ${bounds[0]}`
+            : `${bounds[0]} to ${bounds[1]}`;
+      meaning = `Repeat the preceding element ${count} times${token.endsWith("?") ? ", preferring fewer repetitions" : ""}.`;
+    }
     if (!meaning && /^[+*?]\?$/.test(token))
       meaning = `${meanings[token[0]]} Prefer fewer repetitions.`;
     if (!meaning && token.startsWith("(?<"))
       meaning = `Start a capture group named ${token.slice(3, -1)}.`;
-    if (!meaning && /^\\[1-9]$/.test(token))
-      meaning = `Match the text captured by group ${token.slice(1)}.`;
+    if (!meaning && /^\\[0-9]+$/.test(token))
+      meaning =
+        "A numeric escape: backreference or legacy character escape depending on context and Unicode mode. Verify with example checks.";
     if (!meaning && /^\\[pP]/.test(token))
-      meaning = "Match a Unicode property (requires Unicode mode).";
+      meaning =
+        "Unicode property escape with u enabled; without u it can be interpreted differently. Capital P negates the property.";
     if (!meaning && token.startsWith("\\"))
-      meaning = "An escaped character or special escape sequence.";
+      meaning =
+        "Escaped character or special sequence; this reference does not decode its full meaning. Context and Unicode mode matter.";
     if (!meaning) meaning = `Literal text: ${JSON.stringify(token)}.`;
     parts.push({ token, meaning });
   }
