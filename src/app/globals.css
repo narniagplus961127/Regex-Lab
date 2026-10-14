@@ -523,3 +523,9 @@ footer span:first-child {
     gap: 10px;
   }
 }
+.intent-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 22px 0;
+}
