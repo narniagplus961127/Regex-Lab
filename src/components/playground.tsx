@@ -1,13 +1,17 @@
 "use client";
 import { useState } from "react";
 import { Braces, FlaskConical, ShieldCheck, Terminal } from "lucide-react";
-import { FLAG_OPTIONS } from "@/lib/regex";
+import { FLAG_OPTIONS, type Mode, type Example } from "@/lib/regex";
 import { useRegexTest } from "@/hooks/use-regex-test";
 import { TestEditor } from "./test-editor";
+import { MatchesView } from "./matches-view";
+import { ExampleChecks } from "./example-checks";
 export function Playground() {
   const [pattern, setPattern] = useState(
     "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b",
   );
+  const [examples, setExamples] = useState<Example[]>([]);
+  const [mode, setMode] = useState<Mode>("find");
   const [flags, setFlags] = useState("gi");
   const [text, setText] = useState(
     "Reach us at hello@example.com\nOr contact team@regexlab.dev",
@@ -16,8 +20,8 @@ export function Playground() {
     pattern,
     flags,
     text,
-    mode: "find",
-    examples: [],
+    mode,
+    examples,
   });
   return (
     <div className="app-shell">
@@ -100,6 +104,26 @@ export function Playground() {
                   <span>/</span>
                   <code>{flags || "—"}</code>
                 </div>
+                <div
+                  className="intent-row"
+                  role="group"
+                  aria-label="Matching intent"
+                >
+                  <button
+                    className={`flag-button ${mode === "find" ? "on" : ""}`}
+                    aria-pressed={mode === "find"}
+                    onClick={() => setMode("find")}
+                  >
+                    Find matches in text
+                  </button>
+                  <button
+                    className={`flag-button ${mode === "validate" ? "on" : ""}`}
+                    aria-pressed={mode === "validate"}
+                    onClick={() => setMode("validate")}
+                  >
+                    Validate entire input
+                  </button>
+                </div>
                 <div className="flags-row">
                   <span>Flags</span>
                   {FLAG_OPTIONS.map((option) => (
@@ -126,13 +150,21 @@ export function Playground() {
                   ))}
                 </div>
                 <p className="limit-note">
-                  Pattern limit: 2,000 characters. Enable global to find every
-                  match.
+                  {mode === "validate"
+                    ? "Global iteration is ignored in validation mode."
+                    : "Pattern limit: 2,000 characters. Enable global to find every match."}
                 </p>
               </section>
               <TestEditor
                 text={text}
                 onChange={setText}
+                result={result}
+                testing={testing}
+              />
+              <MatchesView result={result} testing={testing} />
+              <ExampleChecks
+                examples={examples}
+                onChange={setExamples}
                 result={result}
                 testing={testing}
               />

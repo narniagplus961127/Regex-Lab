@@ -1,0 +1,82 @@
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 22px;
+}
+.summary {
+  margin: 18px 22px;
+  color: var(--lime);
+  font-size: 12px;
+}
+.examples {
+  display: grid;
+  gap: 12px;
+  margin: 0 22px;
+}
+.example {
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: #131515;
+  padding: 12px;
+  min-width: 0;
+}
+.heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.heading label {
+  font-size: 11px;
+  color: var(--muted);
+}
+.heading select {
+  background: #242923;
+  color: #d6dcd0;
+  border: 1px solid #424d38;
+  border-radius: 4px;
+  padding: 6px;
+  font: inherit;
+}
+.heading select:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
+}
+.example textarea {
+  width: 100%;
+  display: block;
+  min-height: 65px;
+  resize: vertical;
+  border: 1px solid #35402d;
+  border-radius: 4px;
+  background: #101212;
+  color: #d6dcd0;
+  padding: 10px;
+  font-size: 12px;
+}
+.outcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.pass {
+  color: var(--lime);
+}
+.fail {
+  color: #f2a597;
+}
+@media (max-width: 450px) {
+  .actions,
+  .summary,
+  .examples {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+}

@@ -1,0 +1,56 @@
+.matches {
+  padding: 0 22px 22px;
+  display: grid;
+  gap: 10px;
+  max-height: 400px;
+  overflow: auto;
+}
+.match {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px;
+  background: #131515;
+  min-width: 0;
+}
+.match summary {
+  cursor: pointer;
+  color: var(--lime);
+  font-size: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+}
+.match summary span,
+.match p {
+  color: var(--muted);
+  font-size: 11px;
+}
+.value {
+  display: block;
+  margin-top: 15px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.match ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 7px;
+  font-family: Consolas, monospace;
+  font-size: 12px;
+}
+.match li {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.match h3 {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 400;
+  margin-top: 20px;
+}
+.match summary:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 4px;
+}
