@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-**Resolution:** resolved
+**Resolution:** in-progress
 
 - [x] On desktop, generation and testing share a workbench; on mobile they stack with readable editors and reachable controls.
 - [x] Long patterns and match text scroll within their editors or result areas without forcing unintended page-wide horizontal scrolling.
@@ -19,9 +19,21 @@
 - [x] Browser acceptance checks observe complete user flows at representative desktop and mobile widths, with deterministic AI responses in tests and recorded limits for any unavailable real-provider check.
 - [x] This ticket finishes full-workflow usability; it does not defer basic accessibility or responsive controls required in preceding tickets.
 
+## Layout revision acceptance criteria
+
+- [ ] Remove the left sidebar and retain existing content and core features.
+- [ ] Stack the AI generator, regex expression, and test panel in the main column, in that order.
+- [ ] Place the desktop preset library in a right sidebar with independent scrolling.
+- [ ] On tablet and mobile, provide a slide-in preset drawer with reachable open/close controls, focus management, Escape/backdrop dismissal, and restoration of focus.
+- [ ] Preset selection closes the drawer when applicable and returns focus to the editor while loading the complete preset workspace.
+- [ ] Opening and closing the library preserves typed descriptions and current playground state.
+- [ ] Reverify the full mobile/keyboard workflows and capture updated layout screenshots.
+
 ## Comments
 
 Published on 2026-10-14 after approval of the seven core tickets. Implementation remains paused; publication does not authorize implementation or deployment.
+
+On 2026-10-14, after the original ticket implementation, the user requested the layout revision above using a screenshot as a layout reference only. The earlier seven-ticket functionality stays in scope; account, upgrade, and quota UI from the reference are not requested.
 
 ## Resolution
 

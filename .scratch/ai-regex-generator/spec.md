@@ -12,7 +12,7 @@ Beginners and developers need to find or validate text patterns, but regular-exp
 
 ## Solution
 
-Provide a responsive web app with an AI generator beside an editable JavaScript regex playground. Users start with a plain-language description or a prebuilt preset, edit the resulting pattern, and enter their own test text. The playground updates matches, highlights, capture groups, and example checks as inputs change.
+Provide a responsive web app with a main column containing the AI generator, JavaScript regex editor, and editable test playground in that order. Users start with a plain-language description or a prebuilt preset, edit the resulting pattern, and enter their own test text. The playground updates matches, highlights, capture groups, and example checks as inputs change.
 
 The first release includes 20 categorized presets. Selecting one loads its pattern, effective flags, matching intent, explanation, playground sample, and positive/negative example checks together. Every preset states its supported format and limitations so that users know what it checks.
 
@@ -20,7 +20,7 @@ Users can choose between finding matches within text and validating the entire i
 
 The app requires no visitor account. The owner configures the AI key on the server. Test text stays in the browser; only the description and explicitly supplied example checks are sent for AI generation. Presets and local testing remain available when AI is not configured or is temporarily unavailable.
 
-The confirmed visual direction is a dark developer workbench with readable monospace patterns and clear match highlights. The generator and playground appear together on desktop and stack on mobile.
+The confirmed visual direction is a dark developer workbench with readable monospace patterns and clear match highlights. A desktop right sidebar contains the independently scrollable preset library. Tablet and mobile expose that library through a slide-in drawer. There is no left sidebar. The user's reference image guides layout only; existing content and features remain unchanged.
 
 ## User Stories
 
@@ -94,7 +94,7 @@ The following supporting stories are proposed extras and await consolidated scop
 - Copying preserves the effective behavior, including whole-input boundaries. Regex delimiters, literal slashes, backslashes, and newlines must be serialized correctly.
 - Invalid patterns, no matches, testing in progress, and successful matches are distinct user-visible states.
 - AI output is a proposed pattern, not a correctness guarantee. Syntax validation and visible example checks are required before presenting the result as usable.
-- The desktop layout places generation beside testing. Mobile stacks the work areas. The theme is dark, with monospace pattern text and bright match highlighting.
+- The main column stacks the AI generator, regex editor, and test panel, followed by match details, explanation/copying, and example checks. The desktop preset library sits in an independently scrollable right sidebar; tablet and mobile use a slide-in drawer with keyboard-accessible open/close controls and focus restoration. Remove the left sidebar. The theme remains dark with monospace pattern text and bright match highlighting.
 
 ### Confirmed preset catalogue
 
