@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Braces, FlaskConical, ShieldCheck, Terminal } from "lucide-react";
 import { FLAG_OPTIONS, type Mode, type Example } from "@/lib/regex";
 import { useRegexTest } from "@/hooks/use-regex-test";
@@ -11,6 +11,16 @@ import { PresetLibrary } from "./preset-library";
 import { PatternDetails } from "./pattern-details";
 import { type PatternExplanation } from "@/lib/pattern-export";
 export function Playground() {
+  const patternInput = useRef<HTMLInputElement>(null);
+  function focusEditor() {
+    patternInput.current?.focus();
+    patternInput.current?.scrollIntoView({ block: "center" });
+  }
+  function openLibrary(event: React.MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
+    window.history.replaceState(null, "", "#preset-library");
+    document.getElementById("preset-search")?.focus();
+  }
   const [pattern, setPattern] = useState(
     "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b",
   );
@@ -52,6 +62,7 @@ export function Playground() {
         </div>
         <a
           className="text-button"
+          onClick={openLibrary}
           href="#preset-library"
           style={{ marginTop: 18, padding: "10px 0" }}
         >
@@ -70,6 +81,20 @@ export function Playground() {
             <span className="status-dot" /> JavaScript engine
           </span>
         </header>
+        <nav className="mobile-nav" aria-label="Workbench navigation">
+          <a
+            href="#workbench"
+            onClick={(event) => {
+              event.preventDefault();
+              focusEditor();
+            }}
+          >
+            Playground
+          </a>
+          <a href="#preset-library" onClick={openLibrary}>
+            Preset library
+          </a>
+        </nav>
         <div className="workspace">
           <div className="page-heading">
             <div className="eyebrow">A LITTLE LESS GUESSWORK.</div>
@@ -81,7 +106,7 @@ export function Playground() {
               for.
             </p>
           </div>
-          <div className="workbench">
+          <div className="workbench" id="workbench">
             <GeneratorPanel
               mode={mode}
               flags={flags}
@@ -113,6 +138,11 @@ export function Playground() {
                   <span>/</span>
                   <input
                     aria-label="Regular expression"
+                    ref={patternInput}
+                    aria-invalid={Boolean(result.error)}
+                    aria-describedby={
+                      result.error ? "pattern-error" : undefined
+                    }
                     spellCheck={false}
                     autoComplete="off"
                     value={pattern}
@@ -196,6 +226,7 @@ export function Playground() {
           </div>
           <PresetLibrary
             onSelect={(preset) => {
+              focusEditor();
               setPattern(preset.pattern);
               setFlags(preset.flags);
               setMode(preset.mode);

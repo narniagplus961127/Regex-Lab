@@ -86,7 +86,7 @@ export function TestEditor({
         <span>{text.length.toLocaleString()} / 30,000 characters</span>
       </div>
       {result.error && (
-        <p className="error-box" role="alert">
+        <p className="error-box" role="alert" id="pattern-error">
           {result.error}
         </p>
       )}

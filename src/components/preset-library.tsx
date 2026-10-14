@@ -33,6 +33,7 @@ export function PresetLibrary({
         <label>
           Search presets
           <input
+            id="preset-search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Try email or dates"
