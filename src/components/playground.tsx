@@ -6,6 +6,7 @@ import { useRegexTest } from "@/hooks/use-regex-test";
 import { TestEditor } from "./test-editor";
 import { MatchesView } from "./matches-view";
 import { ExampleChecks } from "./example-checks";
+import { GeneratorPanel } from "./generator-panel";
 import { PresetLibrary } from "./preset-library";
 import { PatternDetails } from "./pattern-details";
 import { type PatternExplanation } from "@/lib/pattern-export";
@@ -81,25 +82,22 @@ export function Playground() {
             </p>
           </div>
           <div className="workbench">
-            <section className="intro-card">
-              <span className="intro-icon">
-                <Braces size={28} />
-              </span>
-              <h2>
-                Your pattern,
-                <br />
-                in plain sight.
-              </h2>
-              <p>
-                Explore matches as you type. The playground runs locally, so you
-                can experiment without an account.
-              </p>
-              <div className="intro-facts">
-                <span>JavaScript regular expressions</span>
-                <span>Live matching, isolated worker</span>
-                <span>No API key needed for testing</span>
-              </div>
-            </section>
+            <GeneratorPanel
+              mode={mode}
+              flags={flags}
+              onGenerated={(generated, intent) => {
+                setPattern(generated.pattern);
+                setFlags(generated.flags);
+                setMode(intent);
+                setExplanation({
+                  pattern: generated.pattern,
+                  flags: generated.flags,
+                  mode: intent,
+                  summary: generated.explanation,
+                  limitations: generated.limitations,
+                });
+              }}
+            />{" "}
             <div className="editor-column">
               <section className="panel pattern-panel">
                 <div className="panel-heading">
