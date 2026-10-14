@@ -98,28 +98,28 @@ The following supporting stories are proposed extras and await consolidated scop
 
 ### Confirmed preset catalogue
 
-| Category | Preset | Intended format and limits |
-| --- | --- | --- |
-| Everyday | Email address | Practical common email format; not all RFC-valid formats or delivery verification |
-| Everyday | HTTP/HTTPS URL | Links with an explicit HTTP or HTTPS scheme; extraction does not establish URL validity |
-| Everyday | Domain name | ASCII DNS-style names, with supported subdomains, label limits, and internationalized-name behavior documented |
-| Everyday | US-style phone number | Seven- or ten-digit US-style formatting, with regional scope stated |
-| Everyday | International phone format | E.164-shaped digits with a leading plus; not numbering-plan or subscriber verification |
-| Validation | Username | 3–20 ASCII letters/digits/underscores, starting with a letter |
-| Validation | Password format | At least 8 non-whitespace characters, including lowercase, uppercase, and a digit; not a strength assessment |
-| Validation | URL slug | Lowercase ASCII letters/digits with single hyphens between segments |
-| Validation | ASCII alphanumeric | Nonempty input made of ASCII letters and digits |
-| Dates & numbers | ISO-style date | YYYY-MM-DD with basic month/day ranges; calendar validity is separate |
-| Dates & numbers | 24-hour time | HH:MM, hours 00–23 and minutes 00–59 |
-| Dates & numbers | Integer | Optional minus sign and decimal digits; no decimal fraction or exponent |
-| Dates & numbers | Decimal number | Optional minus sign and fraction; no exponent or grouping commas |
-| Developer | IPv4 address | Four octets from 0–255, excluding leading zeros |
-| Developer | UUID v4 | Canonical hyphenated hexadecimal form with version-4 and RFC-variant bits |
-| Developer | Hex color | #RGB or #RRGGBB, excluding alpha variants |
-| Developer | Semantic version | SemVer 2.0.0, including optional prerelease and build metadata |
-| Text | Whitespace runs | One or more whitespace characters, including tabs and newlines |
-| Text | ASCII hashtag | A # and documented ASCII letters/digits/underscore; not universal social-platform or Unicode rules |
-| Text | File extension | Filename ending in .jpg, .jpeg, .png, or .pdf, ignoring case; not MIME/content verification |
+| Category        | Preset                     | Intended format and limits                                                                                     |
+| --------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Everyday        | Email address              | Practical common email format; not all RFC-valid formats or delivery verification                              |
+| Everyday        | HTTP/HTTPS URL             | Links with an explicit HTTP or HTTPS scheme; extraction does not establish URL validity                        |
+| Everyday        | Domain name                | ASCII DNS-style names, with supported subdomains, label limits, and internationalized-name behavior documented |
+| Everyday        | US-style phone number      | Seven- or ten-digit US-style formatting, with regional scope stated                                            |
+| Everyday        | International phone format | E.164-shaped digits with a leading plus; not numbering-plan or subscriber verification                         |
+| Validation      | Username                   | 3–20 ASCII letters/digits/underscores, starting with a letter                                                  |
+| Validation      | Password format            | At least 8 non-whitespace characters, including lowercase, uppercase, and a digit; not a strength assessment   |
+| Validation      | URL slug                   | Lowercase ASCII letters/digits with single hyphens between segments                                            |
+| Validation      | ASCII alphanumeric         | Nonempty input made of ASCII letters and digits                                                                |
+| Dates & numbers | ISO-style date             | YYYY-MM-DD with basic month/day ranges; calendar validity is separate                                          |
+| Dates & numbers | 24-hour time               | HH:MM, hours 00–23 and minutes 00–59                                                                           |
+| Dates & numbers | Integer                    | Optional minus sign and decimal digits; no decimal fraction or exponent                                        |
+| Dates & numbers | Decimal number             | Optional minus sign and fraction; no exponent or grouping commas                                               |
+| Developer       | IPv4 address               | Four octets from 0–255, excluding leading zeros                                                                |
+| Developer       | UUID v4                    | Canonical hyphenated hexadecimal form with version-4 and RFC-variant bits                                      |
+| Developer       | Hex color                  | #RGB or #RRGGBB, excluding alpha variants                                                                      |
+| Developer       | Semantic version           | SemVer 2.0.0, including optional prerelease and build metadata                                                 |
+| Text            | Whitespace runs            | One or more whitespace characters, including tabs and newlines                                                 |
+| Text            | ASCII hashtag              | A # and documented ASCII letters/digits/underscore; not universal social-platform or Unicode rules             |
+| Text            | File extension             | Filename ending in .jpg, .jpeg, .png, or .pdf, ignoring case; not MIME/content verification                    |
 
 Each preset must include its required explanation, limitations, matching intent, and example checks. Library search must make its name and description discoverable. Matching intent defaults must suit the preset and remain visible and editable.
 

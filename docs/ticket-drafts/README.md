@@ -6,17 +6,17 @@ Source: the [published AI Regex Generator and Playground specification](../../.s
 
 ## Approved core sequence and optional drafts
 
-| Ticket | Title | Blocked by | Demoable result |
-| --- | --- | --- | --- |
-| 01 | Edit and safely test a pattern live | None | A runnable workbench highlights matches as a visitor edits a pattern, flags, or test text; invalid and slow patterns are handled |
-| 02 | Validate inputs and inspect example checks and captures | 01 | A visitor can switch matching intent, inspect captures, and check positive/negative examples against the current pattern |
-| 03 | Understand and copy the current pattern | 02 | A visitor sees a current explanation and can copy a regex or JavaScript snippet with equivalent behavior |
-| 04 | Explore and load all 20 presets | 03 | A searchable, categorized catalogue loads each preset's complete workspace, including explanations and checks |
-| 05 | Generate a pattern from a description | 03 | A description travels through a real server-side AI request and returns a pattern and explanation into the playground |
-| 06 | Generate using positive and negative examples | 05 | Explicit examples guide the AI and the resulting pattern is visibly checked against them |
-| 07 | Complete the workflow on mobile and by keyboard | 04, 06 | Visitors can complete preset and AI workflows at narrow widths and with a keyboard |
-| 08 | Save and reopen patterns in this browser | 03; optional scope confirmation | A visitor names, saves, reopens, and deletes patterns without an account |
-| 09 | Consult a JavaScript regex cheatsheet | 01; optional scope confirmation | A visitor can look up syntax and return to an intact playground |
+| Ticket | Title                                                   | Blocked by                      | Demoable result                                                                                                                  |
+| ------ | ------------------------------------------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| 01     | Edit and safely test a pattern live                     | None                            | A runnable workbench highlights matches as a visitor edits a pattern, flags, or test text; invalid and slow patterns are handled |
+| 02     | Validate inputs and inspect example checks and captures | 01                              | A visitor can switch matching intent, inspect captures, and check positive/negative examples against the current pattern         |
+| 03     | Understand and copy the current pattern                 | 02                              | A visitor sees a current explanation and can copy a regex or JavaScript snippet with equivalent behavior                         |
+| 04     | Explore and load all 20 presets                         | 03                              | A searchable, categorized catalogue loads each preset's complete workspace, including explanations and checks                    |
+| 05     | Generate a pattern from a description                   | 03                              | A description travels through a real server-side AI request and returns a pattern and explanation into the playground            |
+| 06     | Generate using positive and negative examples           | 05                              | Explicit examples guide the AI and the resulting pattern is visibly checked against them                                         |
+| 07     | Complete the workflow on mobile and by keyboard         | 04, 06                          | Visitors can complete preset and AI workflows at narrow widths and with a keyboard                                               |
+| 08     | Save and reopen patterns in this browser                | 03; optional scope confirmation | A visitor names, saves, reopens, and deletes patterns without an account                                                         |
+| 09     | Consult a JavaScript regex cheatsheet                   | 01; optional scope confirmation | A visitor can look up syntax and return to an intact playground                                                                  |
 
 ## Blocking edges
 
