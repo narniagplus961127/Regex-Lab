@@ -2,12 +2,14 @@
   padding: 24px;
   align-self: start;
 }
+
 .label {
   display: block;
   font-size: 13px;
   margin: 18px 0 10px;
   font-weight: 600;
 }
+
 .panel textarea {
   width: 100%;
   min-height: 150px;
@@ -19,6 +21,7 @@
   background: #101212;
   line-height: 1.6;
 }
+
 .note,
 .privacy,
 .setup {
@@ -26,20 +29,24 @@
   line-height: 1.7;
   color: var(--muted);
 }
+
 .privacy {
   margin: 18px 0;
 }
+
 .setup {
   padding: 12px;
   border: 1px solid var(--border);
   border-radius: 8px;
 }
+
 .actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 14px;
 }
+
 .generate {
   display: flex;
   gap: 8px;
@@ -50,6 +57,7 @@
   border-radius: 8px;
   font-weight: 700;
 }
+
 .error {
   color: #ffb7aa;
   font-size: 13px;
@@ -59,31 +67,40 @@
 .panel :global(.panel-heading) {
   padding: 0;
 }
+
 .panel textarea {
   min-height: 90px;
 }
+
 .label {
   margin-top: 16px;
 }
+
 .panel p:last-child {
   margin-bottom: 0;
 }
+
 .panel {
   padding: 20px;
 }
+
 .note {
   margin: 8px 0;
 }
+
 .note:empty {
   display: none;
 }
+
 .privacy {
   margin: 10px 0;
 }
+
 .setup {
   margin: 10px 0;
   padding: 10px;
 }
+
 .panel textarea {
   font-size: 13px;
   line-height: 1.5;
@@ -92,10 +109,12 @@
 .setup p {
   margin: 0 0 8px;
 }
+
 .setup summary {
   cursor: pointer;
   color: var(--lime);
 }
+
 .setup details p {
   margin-top: 10px;
 }

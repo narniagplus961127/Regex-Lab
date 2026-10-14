@@ -1,6 +1,7 @@
 import { expect, test } from "vitest";
 import { PRESETS } from "../src/lib/presets";
 import { evaluateRegex } from "../src/lib/regex";
+
 // Literal inputs encode the product's format contract independently of the recipes.
 const cases: [string, string[], string[]][] = [
   [
@@ -68,11 +69,14 @@ const cases: [string, string[], string[]][] = [
     ["photo.gif", "report.pdf.exe", "report.pdf\n", "path/report.pdf"],
   ],
 ];
+
 test.each(cases)(
   "%s matches its documented scope in the playground evaluator",
   (id, positives, negatives) => {
     const preset = PRESETS.find((p) => p.id === id)!;
+
     expect(preset, "Recipe must exist").toBeDefined();
+
     const examples = [
       ...positives.map((text, i) => ({
         id: `positive-${i}`,
@@ -85,13 +89,19 @@ test.each(cases)(
         shouldMatch: false,
       })),
     ];
+
     const result = evaluateRegex({ ...preset, examples });
+
     expect(result.error).toBeUndefined();
+
     expect(result.examples.map((check) => check.passed)).toEqual(
       examples.map(() => true),
     );
+
     const supplied = evaluateRegex(preset);
+
     expect(supplied.error).toBeUndefined();
+
     expect(supplied.examples.map((check) => check.passed)).toEqual([
       true,
       true,

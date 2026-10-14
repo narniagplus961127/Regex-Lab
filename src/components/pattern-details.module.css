@@ -2,18 +2,21 @@
   color: #eef1f7;
   line-height: 1.65;
 }
+
 .note {
   color: #9ca7bb;
   font-size: 13px;
   line-height: 1.6;
   margin: 14px 0;
 }
+
 .tokens {
   font-size: 13px;
   line-height: 1.6;
   max-height: 320px;
   overflow: auto;
 }
+
 .tokens div {
   display: grid;
   grid-template-columns: minmax(60px, 1fr) 3fr;
@@ -21,20 +24,24 @@
   padding: 10px 0;
   border-bottom: 1px solid #252d3b;
 }
+
 .tokens dt {
   overflow-wrap: anywhere;
   color: #b6a2ff;
 }
+
 .tokens dd {
   margin: 0;
   color: #aab5c9;
 }
+
 .actions {
   margin-bottom: 12px;
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
+
 .actions button {
   border: 1px solid #4d426c;
   border-radius: 7px;
@@ -45,16 +52,19 @@
   font: inherit;
   font-size: 13px;
 }
+
 .actions button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
+
 .label {
   display: block;
   font-size: 12px;
   color: #aab5c9;
   margin: 10px 0;
 }
+
 .label textarea {
   display: block;
   width: 100%;
@@ -69,11 +79,13 @@
   font-family: monospace;
   line-height: 1.6;
 }
+
 .feedback {
   color: #c6b6ff;
   font-size: 13px;
   min-height: 20px;
 }
+
 .error {
   color: #ff9aab;
   font-size: 13px;
@@ -84,6 +96,7 @@
   padding: 18px 22px;
   border-top: 1px solid var(--border);
 }
+
 .copy summary {
   cursor: pointer;
   color: #cbd4e8;
@@ -94,6 +107,7 @@
 .feedback:empty {
   display: none;
 }
+
 .actions button:first-child {
   background: #242c1e;
   border-color: #39462a;

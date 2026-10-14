@@ -4,16 +4,19 @@
   gap: 8px;
   margin: 0 22px;
 }
+
 .summary {
   margin: 18px 22px;
   color: var(--lime);
   font-size: 12px;
 }
+
 .examples {
   display: grid;
   gap: 12px;
   margin: 0 22px;
 }
+
 .example {
   border: 1px solid var(--border);
   border-radius: 7px;
@@ -21,6 +24,7 @@
   padding: 12px;
   min-width: 0;
 }
+
 .heading {
   display: flex;
   flex-wrap: wrap;
@@ -29,10 +33,12 @@
   gap: 12px;
   margin-bottom: 12px;
 }
+
 .heading label {
   font-size: 11px;
   color: var(--muted);
 }
+
 .heading select {
   background: #242923;
   color: #d6dcd0;
@@ -41,10 +47,12 @@
   padding: 6px;
   font: inherit;
 }
+
 .heading select:focus-visible {
   outline: 2px solid var(--lime);
   outline-offset: 3px;
 }
+
 .example textarea {
   width: 100%;
   display: block;
@@ -57,6 +65,7 @@
   padding: 10px;
   font-size: 12px;
 }
+
 .outcome {
   display: flex;
   align-items: center;
@@ -66,12 +75,15 @@
   color: var(--muted);
   font-size: 11px;
 }
+
 .pass {
   color: var(--lime);
 }
+
 .fail {
   color: #f2a597;
 }
+
 @media (max-width: 450px) {
   .actions,
   .summary,

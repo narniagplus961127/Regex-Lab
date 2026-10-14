@@ -23,10 +23,12 @@ export function MatchesView({
           <span className="number-label">03</span>Match details
         </h2>
       </div>
+
       <p className="limit-note">
         Positions start at 0 and count JavaScript UTF-16 units. End positions
         are exclusive.
       </p>
+
       {testing || result.error || result.matches.length === 0 ? (
         <p className="limit-note">
           {testing
@@ -57,9 +59,11 @@ export function MatchesView({
               ) : (
                 <p>No capture groups in this match.</p>
               )}
+
               {Object.keys(match.namedGroups).length > 0 && (
                 <>
                   <h3>Named captures</h3>
+
                   <ul>
                     {Object.entries(match.namedGroups).map(([name, value]) => (
                       <li key={name}>

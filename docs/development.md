@@ -39,7 +39,7 @@ Generation sends the description, current explicit example checks (text and whet
 
 Limits: description 2,000 characters; up to 20 examples of 1,000 characters each (empty text allowed); streamed request body 140,000 bytes and 5 seconds; provider request 20 seconds with no automatic retries and at most 2,200 output tokens; pattern 2,000 characters; explanation 4,000 characters; up to eight limitation notes of 500 characters each. Requests are cancelled on client disconnect where the host propagates cancellation.
 
-Each running server instance shares a 20-request/minute generation budget and permits at most two concurrent provider calls across all visitors. These in-memory guards reset on restart and are independent across Vercel instances. They are basic safeguards, not a distributed quota or billing cap. Configure provider quotas and hosting protection appropriate to public traffic before publishing.
+Each running server instance shares a 5-request/minute generation budget and permits at most two concurrent provider calls across all visitors. These in-memory guards reset on restart and are independent across Vercel instances. They are basic safeguards, not a distributed quota or billing cap. Configure provider quotas and hosting protection appropriate to public traffic before publishing.
 
 ## Vercel owner setup
 

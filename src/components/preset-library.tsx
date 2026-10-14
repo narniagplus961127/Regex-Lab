@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PRESETS, PRESET_CATEGORIES, type Preset } from "@/lib/presets";
 import styles from "./preset-library.module.css";
+
 export function PresetLibrary({
   onSelect,
   idPrefix = "preset",
@@ -17,6 +18,7 @@ export function PresetLibrary({
       (category === "All" || p.category === category) &&
       `${p.name} ${p.description}`.toLowerCase().includes(needle),
   );
+
   return (
     <section
       id={`${idPrefix}-library`}
@@ -28,9 +30,11 @@ export function PresetLibrary({
         <h2>Preset library</h2>
         <span className="engine-label">20 STARTING POINTS</span>
       </div>
+
       <p className="limit-note">
         Load a complete example, then make it your own. No AI key required.
       </p>
+
       <div className={styles.stickyFilters}>
         <div className={styles.filters}>
           <label>
@@ -42,6 +46,7 @@ export function PresetLibrary({
               placeholder="Try email or dates"
             />
           </label>
+
           <label>
             Preset category
             <select
@@ -54,6 +59,7 @@ export function PresetLibrary({
               ))}
             </select>
           </label>
+
           <button
             className="flag-button"
             onClick={() => {
@@ -64,11 +70,13 @@ export function PresetLibrary({
             Reset filters
           </button>
         </div>
+
         <p className="limit-note" aria-live="polite">
           {visible.length} presets
           {loaded ? ` · Loaded ${loaded} into the playground.` : ""}
         </p>
       </div>
+
       {visible.length === 0 ? (
         <p className={styles.empty}>
           No presets match your search and category. Reset filters to browse all
@@ -91,7 +99,9 @@ export function PresetLibrary({
                   Load pattern <span aria-hidden="true">↗</span>
                 </button>
               </div>
+
               <h3>{p.name}</h3>
+
               <p>{p.description}</p>
             </article>
           ))}

@@ -1,30 +1,40 @@
 import { expect, test } from "@playwright/test";
+
 test("searches, resets, and loads a preset as a complete editable playground", async ({
   page,
 }) => {
   await page.goto("/");
   await page.getByText("Understand your pattern", { exact: true }).click();
+
   const library = page.getByRole("region", { name: "Preset library" });
+
   await expect(library.getByRole("button", { name: /^Load / })).toHaveCount(20);
   await library.getByLabel("Search presets").fill("subdomains");
   await expect(library.getByRole("button", { name: /^Load / })).toHaveCount(1);
   await library.getByLabel("Preset category").selectOption("Developer");
   await expect(library).toContainText("No presets match");
   await library.getByRole("button", { name: "Reset filters" }).click();
+
   await library
     .getByRole("button", { name: "Load 24-hour time", exact: true })
     .click();
+
   await expect(page.getByLabel("Playground test text")).toHaveValue("09:45");
+
   await expect(
     page.getByRole("button", { name: "Validate entire input" }),
   ).toHaveAttribute("aria-pressed", "true");
+
   await expect(
     page.getByRole("region", { name: "Example checks" }),
   ).toContainText("2 / 2 checks passing");
+
   await expect(
     page.getByRole("region", { name: "Pattern explanation" }),
   ).toContainText("00–23");
+
   await page.getByLabel("Regular expression").fill("never");
+
   await expect(
     page.getByRole("region", { name: "Example checks" }),
   ).toContainText("1 / 2 checks passing");
@@ -35,11 +45,14 @@ test("reaches the library from navigation without losing playground edits", asyn
 }) => {
   await page.goto("/");
   await page.getByLabel("Regular expression").fill("my-work");
+
   await page
     .getByRole("button", { name: "Preset library", exact: true })
     .click();
+
   await expect(page.getByLabel("Search presets")).toBeFocused();
   await expect(page.getByLabel("Regular expression")).toHaveValue("my-work");
+
   await expect(
     page.getByRole("region", { name: "Preset library" }),
   ).toBeInViewport();
@@ -50,6 +63,7 @@ test("every preset loads matching intent, sample, limits, and passing checks wit
 }) => {
   await page.goto("/");
   await page.getByText("Understand your pattern", { exact: true }).click();
+
   const library = page.getByRole("region", { name: "Preset library" });
   const setups: [string, string, "find" | "validate", string][] = [
     ["Email address", "hello@example.com", "find", "deliverability"],
@@ -78,23 +92,29 @@ test("every preset loads matching intent, sample, limits, and passing checks wit
     ["ASCII hashtag", "#Regex_2026", "find", "Unicode tags"],
     ["File extension", "report.PDF", "validate", "MIME type"],
   ];
+
   for (const [name, sample, intent, limit] of setups) {
     await library
       .getByRole("button", { name: `Load ${name}`, exact: true })
       .click();
+
     await expect(page.getByLabel("Playground test text")).toHaveValue(sample);
+
     await expect(
       page.getByRole("button", {
         name:
           intent === "find" ? "Find matches in text" : "Validate entire input",
       }),
     ).toHaveAttribute("aria-pressed", "true");
+
     await expect(
       page.getByRole("region", { name: "Example checks" }),
     ).toContainText("2 / 2 checks passing");
+
     await expect(
       page.getByRole("region", { name: "Pattern explanation" }),
     ).toContainText(limit);
+
     await expect(
       page.getByRole("button", { name: "Copy regex", exact: true }),
     ).toBeEnabled();

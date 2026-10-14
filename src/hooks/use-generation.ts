@@ -1,18 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { validatePattern, type Mode, type Example } from "@/lib/regex";
+
 export type GeneratedPattern = {
   pattern: string;
   flags: string;
   explanation: string;
   limitations: string[];
 };
+
 export function useGeneration() {
   const [configured, setConfigured] = useState<boolean | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const controller = useRef<AbortController | null>(null);
+
   useEffect(() => {
     const status = new AbortController();
+
     fetch("/api/generate", { signal: status.signal })
       .then((response) => response.json())
       .then((result) => {
@@ -24,12 +28,14 @@ export function useGeneration() {
             "Could not check AI availability. You can still try generation.",
           );
       });
+
     return () => {
       status.abort();
       controller.current?.abort();
       controller.current = null;
     };
   }, []);
+
   async function generate(
     input: {
       description: string;
@@ -40,11 +46,15 @@ export function useGeneration() {
     apply: (result: GeneratedPattern) => void,
   ) {
     if (controller.current) return;
+
     const current = new AbortController();
+
     controller.current = current;
     setBusy(true);
     setError("");
+
     const timer = setTimeout(() => current.abort("timeout"), 25000);
+
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
@@ -52,13 +62,16 @@ export function useGeneration() {
         body: JSON.stringify(input),
         signal: current.signal,
       });
+
       const result = await response.json();
+
       if (!response.ok)
         throw new Error(
           typeof result.error === "string"
             ? result.error
             : "Generation is unavailable. Try again.",
         );
+
       if (
         typeof result.pattern !== "string" ||
         !result.pattern ||
@@ -72,8 +85,11 @@ export function useGeneration() {
         )
       )
         throw new Error("AI returned an unusable pattern. Try again.");
+
       validatePattern(result.pattern, result.flags);
+
       if (current.signal.aborted || controller.current !== current) return;
+
       apply(result);
     } catch (error) {
       if (controller.current === current)
@@ -88,14 +104,17 @@ export function useGeneration() {
         );
     } finally {
       clearTimeout(timer);
+
       if (controller.current === current) {
         controller.current = null;
         setBusy(false);
       }
     }
   }
+
   function cancel() {
     controller.current?.abort();
   }
+
   return { configured, busy, error, generate, cancel };
 }

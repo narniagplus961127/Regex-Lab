@@ -1,4 +1,5 @@
 import { effectiveRegex, type Mode } from "./regex";
+
 export type PatternExplanation = {
   pattern: string;
   flags: string;
@@ -6,6 +7,7 @@ export type PatternExplanation = {
   summary: string;
   limitations?: string[];
 };
+
 export function exportPattern(pattern: string, flags: string, mode: Mode) {
   const regex = effectiveRegex(pattern, flags, mode);
   const literal = regex.toString();
@@ -15,5 +17,6 @@ export function exportPattern(pattern: string, flags: string, mode: Mode) {
       : regex.global
         ? `const regex = ${literal};\nconst input = "Replace with your text";\nconst matches = Array.from(input.matchAll(regex));\nconsole.log(matches);`
         : `const regex = ${literal};\nconst input = "Replace with your text";\nconst match = regex.exec(input);\nconsole.log(match);`;
+
   return { literal, javascript };
 }

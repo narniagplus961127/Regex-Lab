@@ -1,4 +1,5 @@
 "use client";
+
 import { useRef, useState } from "react";
 import { FLAG_OPTIONS, type Mode, type Example } from "@/lib/regex";
 import { useRegexTest } from "@/hooks/use-regex-test";
@@ -10,15 +11,19 @@ import { WorkbenchLayout } from "./workbench-layout";
 import { PatternCopy } from "./pattern-copy";
 import { PatternDetails } from "./pattern-details";
 import { type PatternExplanation } from "@/lib/pattern-export";
+
 export function Playground() {
   const patternInput = useRef<HTMLInputElement>(null);
+
   function focusEditor() {
     patternInput.current?.focus();
     patternInput.current?.scrollIntoView({ block: "center" });
   }
+
   const [pattern, setPattern] = useState(
     "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b",
   );
+
   const [explanation, setExplanation] = useState<PatternExplanation>({
     pattern: "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b",
     flags: "gi",
@@ -28,12 +33,14 @@ export function Playground() {
       "This practical example does not prove an address exists or cover every valid email format.",
     ],
   });
+
   const [examples, setExamples] = useState<Example[]>([]);
   const [mode, setMode] = useState<Mode>("find");
   const [flags, setFlags] = useState("gi");
   const [text, setText] = useState(
     "Reach us at hello@example.com\nOr contact team@regexlab.dev",
   );
+
   const { result, testing } = useRegexTest({
     pattern,
     flags,
@@ -41,6 +48,7 @@ export function Playground() {
     mode,
     examples,
   });
+
   return (
     <WorkbenchLayout
       focusEditor={focusEditor}
@@ -51,6 +59,7 @@ export function Playground() {
         setMode(preset.mode);
         setText(preset.text);
         setExamples(preset.examples.map((example) => ({ ...example })));
+
         setExplanation({
           pattern: preset.pattern,
           flags: preset.flags,
@@ -63,14 +72,17 @@ export function Playground() {
       <div className="workspace">
         <div className="page-heading">
           <div className="eyebrow">A LITTLE LESS GUESSWORK.</div>
+
           <h1>
             Make every character <em>count.</em>
           </h1>
+
           <p>
             Write a pattern. Test your text. Find exactly what you’re looking
             for.
           </p>
         </div>
+
         <div className="workbench" id="workbench">
           <GeneratorPanel
             mode={mode}
@@ -80,6 +92,7 @@ export function Playground() {
               setPattern(generated.pattern);
               setFlags(generated.flags);
               setMode(intent);
+
               setExplanation({
                 pattern: generated.pattern,
                 flags: generated.flags,
@@ -97,6 +110,7 @@ export function Playground() {
                 </h2>
                 <span className="engine-label">JAVASCRIPT</span>
               </div>
+
               <div
                 className={`regex-input-shell ${result.error ? "has-error" : ""}`}
               >
@@ -115,6 +129,7 @@ export function Playground() {
                 <span>/</span>
                 <code>{flags || "—"}</code>
               </div>
+
               <div
                 className="intent-row"
                 role="group"
@@ -127,6 +142,7 @@ export function Playground() {
                 >
                   Find matches in text
                 </button>
+
                 <button
                   className={`flag-button ${mode === "validate" ? "on" : ""}`}
                   aria-pressed={mode === "validate"}
@@ -135,6 +151,7 @@ export function Playground() {
                   Validate entire input
                 </button>
               </div>
+
               <div className="flags-row">
                 <span>Flags</span>
                 {FLAG_OPTIONS.map((option) => (
@@ -160,11 +177,13 @@ export function Playground() {
                   </button>
                 ))}
               </div>
+
               <p className="limit-note">
                 {mode === "validate"
                   ? "Global iteration is ignored in validation mode."
                   : "Pattern limit: 2,000 characters. Enable global to find every match."}
               </p>
+
               <PatternCopy pattern={pattern} flags={flags} mode={mode}>
                 <PatternDetails
                   pattern={pattern}
@@ -174,13 +193,16 @@ export function Playground() {
                 />
               </PatternCopy>
             </section>
+
             <TestEditor
               text={text}
               onChange={setText}
               result={result}
               testing={testing}
             />
+
             <MatchesView result={result} testing={testing} />
+
             <ExampleChecks
               examples={examples}
               onChange={setExamples}

@@ -19,35 +19,46 @@ export function WorkbenchLayout({
   const sidebar = useRef<HTMLElement>(null);
   const drawer = useRef<HTMLDialogElement>(null);
   const selected = useRef(false);
+
   useEffect(() => {
     const media = window.matchMedia("(min-width: 1025px)");
     const resize = () => {
       setNarrow(!media.matches);
+
       if (media.matches && drawer.current?.open) drawer.current.close();
     };
+
     resize();
     media.addEventListener("change", resize);
+
     return () => media.removeEventListener("change", resize);
   }, []);
+
   useEffect(() => {
     if (drawerOpen) {
       const previousOverflow = document.body.style.overflow;
+
       document.body.style.overflow = "hidden";
       drawer.current?.showModal();
       drawer.current?.querySelector<HTMLInputElement>("input")?.focus();
+
       return () => {
         document.body.style.overflow = previousOverflow;
       };
     }
   }, [drawerOpen]);
+
   function openLibrary() {
     if (window.matchMedia("(min-width: 1025px)").matches) {
       sidebar.current?.querySelector<HTMLInputElement>("input")?.focus();
+
       return;
     }
+
     selected.current = false;
     setDrawerOpen(true);
   }
+
   return (
     <div className={styles.shell}>
       <header className={styles.header}>
@@ -57,6 +68,7 @@ export function WorkbenchLayout({
           </span>
           Regex<span>Lab</span>
         </a>
+
         <div className={styles.headerActions}>
           <button
             ref={trigger}
@@ -70,8 +82,10 @@ export function WorkbenchLayout({
           </button>
         </div>
       </header>
+
       <div className={styles.columns}>
         <main className={styles.main}>{children}</main>
+
         <aside
           ref={sidebar}
           className={styles.sidebar}
@@ -80,19 +94,23 @@ export function WorkbenchLayout({
           {!narrow && <PresetLibrary onSelect={onSelect} />}
         </aside>
       </div>
+
       <dialog
         ref={drawer}
         className={styles.drawer}
         aria-label="Preset library drawer"
         onKeyDown={(event) => {
           if (event.key !== "Tab") return;
+
           const controls = Array.from(
             event.currentTarget.querySelectorAll<HTMLElement>(
               "button:not(:disabled), input, select, textarea, a[href]",
             ),
           );
+
           const first = controls[0];
           const last = controls.at(-1);
+
           if (event.shiftKey && document.activeElement === first) {
             event.preventDefault();
             last?.focus();
@@ -103,12 +121,14 @@ export function WorkbenchLayout({
         }}
         onClose={() => {
           setDrawerOpen(false);
+
           if (selected.current) focusEditor();
           else trigger.current?.focus();
         }}
         onClick={(event) => {
           if (event.target === event.currentTarget) {
             const rect = event.currentTarget.getBoundingClientRect();
+
             if (
               event.clientX < rect.left ||
               event.clientX > rect.right ||
@@ -128,6 +148,7 @@ export function WorkbenchLayout({
             <X size={20} />
           </button>
         </div>
+
         {narrow && drawerOpen && (
           <PresetLibrary
             idPrefix="drawer"
@@ -139,6 +160,7 @@ export function WorkbenchLayout({
           />
         )}
       </dialog>
+
       <footer className={styles.footer}>
         <span>
           <Terminal size={14} /> A small tool for better patterns.

@@ -15,11 +15,14 @@ export function ExampleChecks({
   const outcomes = new Map(
     result.examples.map((example) => [example.id, example]),
   );
+
   const completed =
     !testing && !result.error && result.examples.length === examples.length;
+
   const passing = result.examples.filter((example) => example.passed).length;
   const addExample = (shouldMatch: boolean) =>
     onChange([...examples, { id: crypto.randomUUID(), text: "", shouldMatch }]);
+
   return (
     <section className="panel" aria-label="Example checks">
       <div className="panel-heading">
@@ -27,11 +30,13 @@ export function ExampleChecks({
           <span className="number-label">04</span>Example checks
         </h2>
       </div>
+
       <p className="limit-note">
         Tell the pattern what should match and what should fail. Empty input is
         a valid example. Checks run in your browser; their text and expected
         outcomes are sent to Groq only when you click Generate regex.
       </p>
+
       <div className={styles.actions}>
         <button
           className="flag-button"
@@ -40,6 +45,7 @@ export function ExampleChecks({
         >
           Add should match
         </button>
+
         <button
           className="flag-button"
           onClick={() => addExample(false)}
@@ -48,6 +54,7 @@ export function ExampleChecks({
           Add should not match
         </button>
       </div>
+
       <p className={styles.summary} aria-live="polite">
         {examples.length === 0
           ? "No example checks yet."
@@ -57,9 +64,11 @@ export function ExampleChecks({
               ? "Checks unavailable — fix the pattern or shorten the input."
               : `${passing} / ${examples.length} checks passing`}
       </p>
+
       <div className={styles.examples}>
         {examples.map((example, index) => {
           const outcome = completed ? outcomes.get(example.id) : undefined;
+
           return (
             <div className={styles.example} key={example.id}>
               <div className={styles.heading}>
@@ -85,6 +94,7 @@ export function ExampleChecks({
                     <option value="no-match">Should not match</option>
                   </select>
                 </label>
+
                 <button
                   className="text-button"
                   aria-label={`Remove example ${index + 1}`}
@@ -95,6 +105,7 @@ export function ExampleChecks({
                   Remove
                 </button>
               </div>
+
               <textarea
                 aria-label={`Example ${index + 1} text`}
                 value={example.text}
@@ -111,6 +122,7 @@ export function ExampleChecks({
                   )
                 }
               />
+
               <div className={styles.outcome}>
                 <span>
                   {outcome
@@ -131,6 +143,7 @@ export function ExampleChecks({
           );
         })}
       </div>
+
       <p className="limit-note">
         Up to 20 examples, 1,000 characters each. The same 1.5-second testing
         deadline protects all checks.

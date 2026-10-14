@@ -1,4 +1,5 @@
 import type { Example, Mode } from "./regex";
+
 export const PRESET_CATEGORIES = [
   "Everyday",
   "Validation",
@@ -6,6 +7,7 @@ export const PRESET_CATEGORIES = [
   "Developer",
   "Text",
 ] as const;
+
 export type Preset = {
   id: string;
   name: string;
@@ -20,6 +22,7 @@ export type Preset = {
   examples: Example[];
   source?: string;
 };
+
 function recipe(
   id: string,
   name: string,
@@ -51,6 +54,7 @@ function recipe(
     ],
   };
 }
+
 // These recipes intentionally cover the format documented in each entry, not external verification.
 export const PRESETS: Preset[] = [
   recipe(

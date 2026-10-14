@@ -1,11 +1,14 @@
 export type Mode = "find" | "validate";
+
 export type Example = { id: string; text: string; shouldMatch: boolean };
+
 export type RegexMatch = {
   value: string;
   index: number;
   groups: (string | null)[];
   namedGroups: Record<string, string | null>;
 };
+
 export type TestRequest = {
   pattern: string;
   flags: string;
@@ -13,6 +16,7 @@ export type TestRequest = {
   text: string;
   examples: Example[];
 };
+
 export type TestResult = {
   matches: RegexMatch[];
   examples: { id: string; passed: boolean; matched: boolean }[];
@@ -52,8 +56,10 @@ export const FLAG_OPTIONS = [
 export function validatePattern(pattern: string, flags: string) {
   if (pattern.length > 2000)
     throw new Error("Keep patterns under 2,000 characters.");
+
   if (!/^(?!.*(.).*\1)[gimsu]*$/.test(flags))
     throw new Error("Use each supported flag only once: g, i, m, s, u.");
+
   try {
     new RegExp(pattern, flags);
   } catch (error) {
@@ -65,6 +71,7 @@ export function validatePattern(pattern: string, flags: string) {
 
 export function effectiveRegex(pattern: string, flags: string, mode: Mode) {
   validatePattern(pattern, flags);
+
   // The end assertion is strict even with multiline mode or a trailing newline.
   return new RegExp(
     mode === "validate" ? `(?<![\\s\\S])(?:${pattern})(?![\\s\\S])` : pattern,
@@ -75,8 +82,10 @@ export function effectiveRegex(pattern: string, flags: string, mode: Mode) {
 export function evaluateRegex(request: TestRequest): TestResult {
   const start = performance.now();
   const { pattern, flags, mode, text, examples } = request;
+
   try {
     validatePattern(pattern, flags);
+
     if (
       text.length > 30000 ||
       examples.length > 20 ||
@@ -85,20 +94,25 @@ export function evaluateRegex(request: TestRequest): TestResult {
       throw new Error(
         "Test text is limited to 30,000 characters and 20 examples of 1,000 characters each.",
       );
+
     const regex = effectiveRegex(pattern, flags, mode);
     const matches: RegexMatch[] = [];
     let match: RegExpExecArray | null;
     let truncated = false;
+
     while ((match = regex.exec(text)) !== null) {
       if (
         mode === "validate" &&
         (match.index !== 0 || match[0].length !== text.length)
       )
         break;
+
       if (matches.length === 500) {
         truncated = true;
+
         break;
       }
+
       matches.push({
         value: match[0],
         index: match.index,
@@ -107,16 +121,20 @@ export function evaluateRegex(request: TestRequest): TestResult {
           Object.entries(match.groups ?? {}).map(([k, v]) => [k, v ?? null]),
         ),
       });
+
       if (!regex.global) break;
+
       // Empty matches must advance by a code point in Unicode mode.
       if (match[0] === "") {
         const codePoint = text.codePointAt(regex.lastIndex);
+
         regex.lastIndex +=
           regex.unicode && codePoint !== undefined && codePoint > 0xffff
             ? 2
             : 1;
       }
     }
+
     const exampleResults = examples.map((example) => {
       const candidate = effectiveRegex(pattern, flags, mode).exec(example.text);
       const matched =
@@ -124,12 +142,14 @@ export function evaluateRegex(request: TestRequest): TestResult {
         (mode === "find" ||
           (candidate.index === 0 &&
             candidate[0].length === example.text.length));
+
       return {
         id: example.id,
         matched,
         passed: matched === example.shouldMatch,
       };
     });
+
     return {
       matches,
       examples: exampleResults,
@@ -154,12 +174,14 @@ export function regexLiteral(pattern: string, flags: string) {
 }
 
 export type PatternPart = { token: string; meaning: string };
+
 export function explainPattern(pattern: string): PatternPart[] {
   const parts: PatternPart[] = [];
   const tokens =
     pattern.match(
       /\[(?:\\.|[^\]\\])*\]|\\(?:[pP]\{[^}]+\}|u\{[0-9a-fA-F]+\}|u[0-9a-fA-F]{4}|x[0-9a-fA-F]{2}|c[A-Za-z]|k<[^>]+>|[0-9]+|.)|\(\?<[=!]|\(\?<[^>]+>|\(\?[=:!]|\(\?:|\{\d+(?:,\d*)?\}[?]?|[+*?][?]?|[()^$.|]|[^\\[()^$.|+*?{}]+|./g,
     ) ?? [];
+
   const meanings: Record<string, string> = {
     "^": "Start of the input (or line with m).",
     $: "End of input, also before a final line terminator; line boundaries with m.",
@@ -188,12 +210,15 @@ export function explainPattern(pattern: string): PatternPart[] {
     "\\t": "A tab character.",
     "\\r": "A carriage return character.",
   };
+
   for (const token of tokens) {
     let meaning = meanings[token];
+
     if (!meaning && token.startsWith("["))
       meaning = token.startsWith("[^")
         ? "One character outside this character set."
         : "One character from this character set.";
+
     if (!meaning && token.startsWith("{")) {
       const bounds = token.replace(/[{}?]/g, "").split(",");
       const count =
@@ -202,23 +227,32 @@ export function explainPattern(pattern: string): PatternPart[] {
           : bounds[1] === ""
             ? `at least ${bounds[0]}`
             : `${bounds[0]} to ${bounds[1]}`;
+
       meaning = `Repeat the preceding element ${count} times${token.endsWith("?") ? ", preferring fewer repetitions" : ""}.`;
     }
+
     if (!meaning && /^[+*?]\?$/.test(token))
       meaning = `${meanings[token[0]]} Prefer fewer repetitions.`;
+
     if (!meaning && token.startsWith("(?<"))
       meaning = `Start a capture group named ${token.slice(3, -1)}.`;
+
     if (!meaning && /^\\[0-9]+$/.test(token))
       meaning =
         "A numeric escape: backreference or legacy character escape depending on context and Unicode mode. Verify with example checks.";
+
     if (!meaning && /^\\[pP]/.test(token))
       meaning =
         "Unicode property escape with u enabled; without u it can be interpreted differently. Capital P negates the property.";
+
     if (!meaning && token.startsWith("\\"))
       meaning =
         "Escaped character or special sequence; this reference does not decode its full meaning. Context and Unicode mode matter.";
+
     if (!meaning) meaning = `Literal text: ${JSON.stringify(token)}.`;
+
     parts.push({ token, meaning });
   }
+
   return parts;
 }

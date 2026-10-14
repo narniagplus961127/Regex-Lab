@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { evaluateRegex } from "../src/lib/regex";
+
 describe("evaluateRegex", () => {
   it("reports a complete count when exactly 500 matches exist", () => {
     const result = evaluateRegex({
@@ -9,6 +10,7 @@ describe("evaluateRegex", () => {
       text: "a".repeat(500),
       examples: [],
     });
+
     expect(result.matches).toHaveLength(500);
     expect(result.truncated).toBe(false);
   });
@@ -34,12 +36,15 @@ describe("whole-input validation and captures", () => {
         mode: "validate",
         examples: [{ id: "sample", text, shouldMatch: matched }],
       });
+
       expect(result.matches.length > 0).toBe(matched);
+
       expect(result.examples).toEqual([
         { id: "sample", matched, passed: true },
       ]);
     },
   );
+
   it("returns numbered and named captures without conflating empty and unmatched values", () => {
     const result = evaluateRegex({
       pattern: "(?<letter>a)(?<optional>b)?(?<empty>c*)",
@@ -48,6 +53,7 @@ describe("whole-input validation and captures", () => {
       text: "xxa a",
       examples: [],
     });
+
     expect(result.matches).toEqual([
       {
         value: "a",

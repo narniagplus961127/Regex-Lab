@@ -18,20 +18,25 @@ export function PatternCopy({
     key: string;
     message: string;
   } | null>(null);
+
   const regexOutput = useRef<HTMLDetailsElement>(null);
   const javascriptOutput = useRef<HTMLDetailsElement>(null);
   const key = JSON.stringify([pattern, flags, mode]);
   let output: ReturnType<typeof exportPattern> | undefined;
+
   try {
     output = exportPattern(pattern, flags, mode);
   } catch {}
+
   async function copy(value: string, label: string) {
     try {
       await navigator.clipboard.writeText(value);
       setFeedback({ key, message: `${label} copied.` });
     } catch {
       if (regexOutput.current) regexOutput.current.open = true;
+
       if (javascriptOutput.current) javascriptOutput.current.open = true;
+
       setFeedback({
         key,
         message:
@@ -39,6 +44,7 @@ export function PatternCopy({
       });
     }
   }
+
   return (
     <div
       className={styles.copy}
@@ -48,6 +54,7 @@ export function PatternCopy({
       {!output && (
         <p className={styles.error}>Fix the invalid pattern before copying.</p>
       )}
+
       <div className={styles.actions}>
         <button
           disabled={!output}
@@ -55,6 +62,7 @@ export function PatternCopy({
         >
           Copy regex
         </button>
+
         <button
           disabled={!output}
           onClick={() => output && copy(output.javascript, "JavaScript")}
@@ -62,11 +70,14 @@ export function PatternCopy({
           Copy JavaScript
         </button>
       </div>
+
       <p aria-live="polite" className={styles.feedback}>
         {feedback?.key === key ? feedback.message : ""}
       </p>
+
       <details ref={regexOutput}>
         <summary>Exported regex</summary>
+
         <p className={styles.note}>
           {mode === "validate"
             ? "Whole-input export uses absolute boundaries and ignores global iteration, including with multiline enabled."
@@ -74,6 +85,7 @@ export function PatternCopy({
           Exported JavaScript runs in your environment; it has no playground
           worker deadline.
         </p>
+
         <label className={styles.label}>
           Effective regex
           <textarea
@@ -84,8 +96,10 @@ export function PatternCopy({
           />
         </label>
       </details>
+
       <details ref={javascriptOutput}>
         <summary>JavaScript usage</summary>
+
         <label className={styles.label}>
           Copyable snippet
           <textarea
@@ -96,6 +110,7 @@ export function PatternCopy({
           />
         </label>
       </details>
+
       {children}
     </div>
   );
