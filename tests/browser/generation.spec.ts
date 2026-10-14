@@ -72,6 +72,9 @@ test("failed generation preserves a usable pattern and test text", async ({
 test("missing configuration explains setup while local matching stays usable", async ({
   page,
 }) => {
+  await page.route("**/api/generate", (route) =>
+    route.fulfill({ json: { configured: false } }),
+  );
   await page.goto("/");
   await expect(
     page.getByText("AI is not configured.", { exact: false }),
