@@ -158,7 +158,7 @@ export function explainPattern(pattern: string): PatternPart[] {
   const parts: PatternPart[] = [];
   const tokens =
     pattern.match(
-      /\[(?:\\.|[^\]\\])*\]|\\(?:[pP]\{[^}]+\}|u\{[0-9a-fA-F]+\}|u[0-9a-fA-F]{4}|x[0-9a-fA-F]{2}|c[A-Za-z]|k<[^>]+>|[0-9]+|.)|\(\?<[^>]+>|\(\?[=:!]|\(\?<[=!]|\(\?:|\{\d+(?:,\d*)?\}[?]?|[+*?][?]?|[()^$.|]|[^\\[()^$.|+*?{}]+|./g,
+      /\[(?:\\.|[^\]\\])*\]|\\(?:[pP]\{[^}]+\}|u\{[0-9a-fA-F]+\}|u[0-9a-fA-F]{4}|x[0-9a-fA-F]{2}|c[A-Za-z]|k<[^>]+>|[0-9]+|.)|\(\?<[=!]|\(\?<[^>]+>|\(\?[=:!]|\(\?:|\{\d+(?:,\d*)?\}[?]?|[+*?][?]?|[()^$.|]|[^\\[()^$.|+*?{}]+|./g,
     ) ?? [];
   const meanings: Record<string, string> = {
     "^": "Start of the input (or line with m).",

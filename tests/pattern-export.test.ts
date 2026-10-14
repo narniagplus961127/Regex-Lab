@@ -71,3 +71,39 @@ it("serializes literal line breaks safely for executable JavaScript", () => {
   expect(output.literal).not.toContain("\n");
   expect(output.literal).not.toContain("\r");
 });
+it.each([
+  [
+    "(?<=a)b>c",
+    "(?<=",
+    "Require the preceding expression, without consuming it.",
+  ],
+  [
+    "(?<!a)b>c",
+    "(?<!",
+    "Reject the preceding expression, without consuming it.",
+  ],
+])(
+  "explains lookbehind without consuming subsequent literal text: %s",
+  (pattern, opener, meaning) => {
+    expect(explainPattern(pattern)).toEqual([
+      { token: opener, meaning },
+      { token: "a", meaning: 'Literal text: "a".' },
+      { token: ")", meaning: "End the current group." },
+      { token: "b>c", meaning: 'Literal text: "b>c".' },
+    ]);
+  },
+);
+it("preserves named capture explanations beside lookbehind and literal greater-than text", () => {
+  expect(explainPattern("(?<=a)(?<letter>b)>c")).toEqual([
+    {
+      token: "(?<=",
+      meaning: "Require the preceding expression, without consuming it.",
+    },
+    { token: "a", meaning: 'Literal text: "a".' },
+    { token: ")", meaning: "End the current group." },
+    { token: "(?<letter>", meaning: "Start a capture group named letter." },
+    { token: "b", meaning: 'Literal text: "b".' },
+    { token: ")", meaning: "End the current group." },
+    { token: ">c", meaning: 'Literal text: ">c".' },
+  ]);
+});
