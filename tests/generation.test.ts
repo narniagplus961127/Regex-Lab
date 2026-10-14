@@ -54,6 +54,10 @@ test("description generates a validated pattern through the real provider transp
       method: "POST",
       body: JSON.stringify({
         description: "Find numbers",
+        examples: [
+          { text: "123", shouldMatch: true },
+          { text: "", shouldMatch: false },
+        ],
         mode: "validate",
         flags: "gi",
       }),
@@ -68,6 +72,15 @@ test("description generates a validated pattern through the real provider transp
   });
   const body = String(fetch.mock.calls[0][1]?.body);
   expect(body).toContain("Find numbers");
+  const messages = JSON.parse(body).messages;
+  const prompt = JSON.parse(
+    messages.find((message: { role: string }) => message.role === "user")
+      .content,
+  );
+  expect(prompt.examples).toEqual([
+    { text: "123", shouldMatch: true },
+    { text: "", shouldMatch: false },
+  ]);
   expect(body).toContain('"strict":true');
   expect(body).not.toContain("hello@example.com");
 });
@@ -89,7 +102,7 @@ test("invalid and oversized request bodies are rejected before provider access",
     );
     expect(response.status).toBe(400);
   }
-  const bytes = new TextEncoder().encode("x".repeat(14000));
+  const bytes = new TextEncoder().encode("x".repeat(140001));
   const stream = new ReadableStream({
     start(controller) {
       controller.enqueue(bytes);
@@ -100,6 +113,7 @@ test("invalid and oversized request bodies are rejected before provider access",
     new Request("http://localhost/api/generate", {
       method: "POST",
       body: stream,
+      headers: { "Content-Length": "1" },
       duplex: "half",
     } as RequestInit),
   );
@@ -235,4 +249,86 @@ test("concurrent provider calls are capped and cancellation releases a slot", as
   expect(JSON.stringify(await response.json())).not.toContain(
     "test-secret-not-real",
   );
+});
+
+test("example request bounds reject malformed checks before contacting Groq", async () => {
+  vi.stubEnv("GROQ_API_KEY", "test-secret-not-real");
+  const transport = vi.spyOn(globalThis, "fetch");
+  for (const examples of [
+    Array.from({ length: 21 }, () => ({ text: "", shouldMatch: true })),
+    [{ text: "x".repeat(1001), shouldMatch: true }],
+    [{ text: "", shouldMatch: "false" }],
+    [{ text: "", shouldMatch: false, id: "private-id" }],
+    [{ shouldMatch: true }],
+    null,
+  ]) {
+    const response = await POST(
+      new Request("http://localhost/api/generate", {
+        method: "POST",
+        body: JSON.stringify({
+          description: "Digits",
+          flags: "g",
+          mode: "find",
+          examples,
+        }),
+      }),
+    );
+    expect(response.status).toBe(400);
+  }
+  expect(transport).not.toHaveBeenCalled();
+});
+
+test("all permitted Unicode examples reach Groq within the streaming byte bound", async () => {
+  vi.stubEnv("GROQ_API_KEY", "test-secret-not-real");
+  const transport = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+    Response.json({
+      id: "unicode",
+      object: "chat.completion",
+      created: 1,
+      model: "openai/gpt-oss-20b",
+      choices: [
+        {
+          index: 0,
+          finish_reason: "stop",
+          message: {
+            role: "assistant",
+            content: JSON.stringify({
+              pattern: "字+",
+              flags: "u",
+              explanation: "Matches this character.",
+              limitations: [],
+            }),
+          },
+        },
+      ],
+      usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 },
+    }),
+  );
+  const examples = Array.from({ length: 20 }, () => ({
+    text: "字".repeat(1000),
+    shouldMatch: true,
+  }));
+  const body = JSON.stringify({
+    description: "字".repeat(2000),
+    mode: "validate",
+    flags: "u",
+    examples,
+  });
+  const response = await POST(
+    new Request("http://localhost/api/generate", {
+      method: "POST",
+      headers: { "Content-Length": "1" },
+      body,
+    }),
+  );
+  expect(response.status).toBe(200);
+  const messages = JSON.parse(
+    String(transport.mock.calls[0][1]?.body),
+  ).messages;
+  expect(
+    JSON.parse(
+      messages.find((message: { role: string }) => message.role === "user")
+        .content,
+    ).examples,
+  ).toEqual(examples);
 });

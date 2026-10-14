@@ -9,6 +9,7 @@ test("generate from description while preserving private playground text", async
       description: "Find numbers",
       mode: "find",
       flags: "gi",
+      examples: [],
     });
     await route.fulfill({
       json: {
@@ -123,4 +124,91 @@ test("generation reports progress, prevents duplicates, and can be cancelled", a
   await expect(
     page.getByRole("button", { name: "Generate regex", exact: true }),
   ).toBeEnabled();
+});
+
+test("explicit examples guide generation and failed checks stay visible until revision", async ({
+  page,
+}) => {
+  const submissions: unknown[] = [];
+  await page.route("**/api/generate", async (route) => {
+    if (route.request().method() === "GET")
+      return route.fulfill({ json: { configured: true } });
+    submissions.push(route.request().postDataJSON());
+    await route.fulfill({
+      json: {
+        pattern: "[0-9]+",
+        flags: "i",
+        explanation: "Matches digits; check examples locally.",
+        limitations: [],
+      },
+    });
+  });
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: "Validate entire input", exact: true })
+    .click();
+  await page.getByLabel("Describe your pattern").fill("Require digits");
+  await page.getByLabel("Test text").fill("private playground 999");
+  await page
+    .getByRole("button", { name: "Add should match", exact: true })
+    .click();
+  await page.getByLabel("Example 1 text").fill("123");
+  await page
+    .getByRole("button", { name: "Add should not match", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Add should not match", exact: true })
+    .click();
+  await page.getByLabel("Example 3 text").fill("abc 123");
+  await page
+    .getByRole("button", { name: "Add should match", exact: true })
+    .click();
+  await page.getByLabel("Example 4 text").fill("ABC");
+  await expect(
+    page.getByText("Current example checks are sent", { exact: false }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Generate regex", exact: true })
+    .click();
+  await expect(page.getByLabel("Regular expression")).toHaveValue("[0-9]+");
+  await expect(
+    page.getByText("3 / 4 checks passing", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page
+      .getByRole("region", { name: "Example checks" })
+      .getByText("Fail", { exact: true }),
+  ).toBeVisible();
+  expect(submissions).toEqual([
+    {
+      description: "Require digits",
+      mode: "validate",
+      flags: "gi",
+      examples: [
+        { text: "123", shouldMatch: true },
+        { text: "", shouldMatch: false },
+        { text: "abc 123", shouldMatch: false },
+        { text: "ABC", shouldMatch: true },
+      ],
+    },
+  ]);
+  await expect(page.getByLabel("Test text")).toHaveValue(
+    "private playground 999",
+  );
+  await page.getByLabel("Example 4 text").fill("456");
+  await page
+    .getByRole("button", { name: "Find matches in text", exact: true })
+    .click();
+  await page.getByLabel("Describe your pattern").fill("Find digits anywhere");
+  await page
+    .getByRole("button", { name: "Generate regex", exact: true })
+    .click();
+  await expect.poll(() => submissions.length).toBe(2);
+  await expect(
+    page.getByText("3 / 4 checks passing", { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByLabel("Example 4 text")).toHaveValue("456");
+  await expect(page.getByLabel("Test text")).toHaveValue(
+    "private playground 999",
+  );
 });

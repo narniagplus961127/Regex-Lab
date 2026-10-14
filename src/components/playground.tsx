@@ -85,6 +85,7 @@ export function Playground() {
             <GeneratorPanel
               mode={mode}
               flags={flags}
+              examples={examples}
               onGenerated={(generated, intent) => {
                 setPattern(generated.pattern);
                 setFlags(generated.flags);

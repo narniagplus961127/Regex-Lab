@@ -29,7 +29,8 @@ export function ExampleChecks({
       </div>
       <p className="limit-note">
         Tell the pattern what should match and what should fail. Empty input is
-        a valid example. These checks stay in your browser.
+        a valid example. Checks run in your browser; their text and expected
+        outcomes are sent to Groq only when you click Generate regex.
       </p>
       <div className={styles.actions}>
         <button
