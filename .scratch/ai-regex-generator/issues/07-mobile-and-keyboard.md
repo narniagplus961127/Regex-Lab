@@ -6,7 +6,7 @@
 
 **Status:** ready-for-agent
 
-**Resolution:** in-progress
+**Resolution:** resolved
 
 - [x] On desktop, generation and testing share a workbench; on mobile they stack with readable editors and reachable controls.
 - [x] Long patterns and match text scroll within their editors or result areas without forcing unintended page-wide horizontal scrolling.
@@ -21,13 +21,13 @@
 
 ## Layout revision acceptance criteria
 
-- [ ] Remove the left sidebar and retain existing content and core features.
-- [ ] Stack the AI generator, regex expression, and test panel in the main column, in that order.
-- [ ] Place the desktop preset library in a right sidebar with independent scrolling.
-- [ ] On tablet and mobile, provide a slide-in preset drawer with reachable open/close controls, focus management, Escape/backdrop dismissal, and restoration of focus.
-- [ ] Preset selection closes the drawer when applicable and returns focus to the editor while loading the complete preset workspace.
-- [ ] Opening and closing the library preserves typed descriptions and current playground state.
-- [ ] Reverify the full mobile/keyboard workflows and capture updated layout screenshots.
+- [x] Remove the left sidebar and retain existing content and core features.
+- [x] Stack the AI generator, regex expression, and test panel in the main column, in that order.
+- [x] Place the desktop preset library in a right sidebar with independent scrolling.
+- [x] On tablet and mobile, provide a slide-in preset drawer with reachable open/close controls, focus management, Escape/backdrop dismissal, and restoration of focus.
+- [x] Preset selection closes the drawer when applicable and returns focus to the editor while loading the complete preset workspace.
+- [x] Opening and closing the library preserves typed descriptions and current playground state.
+- [x] Reverify the full mobile/keyboard workflows and capture updated layout screenshots.
 
 ## Comments
 
@@ -40,3 +40,9 @@ On 2026-10-14, after the original ticket implementation, the user requested the 
 Resolved on 2026-10-14. Both mobile workflows and desktop keyboard navigation are implemented. Mobile navigation remains visible; library links focus search, and loading a preset returns focus to the pattern editor. Invalid pattern errors are associated with the editor, disclosure/select focus is visible, and completed generation is announced without color.
 
 Verification: 25 browser workflow tests pass on IPv4 port 3107 with one worker, including 390px preset and example-guided AI keyboard workflows, 320px long-pattern containment and multiline Unicode overlay scroll alignment, keyboard disclosure/copy recovery, desktop logical tab order, flags and validation. 51 unit/API tests, TypeScript, production build, Prettier and CRLF checks pass. Browser AI responses are deterministic fixtures at the HTTP boundary; no live Groq key was available. Real route behavior is covered by the API tests. Desktop/mobile screenshots were exported from the actual app to ignored output/playwright. No optional saved patterns, cheatsheet or deployment.
+
+### Layout revision completed
+
+The left sidebar was removed. AI generation, pattern editing, test text, captures, explanations, copying, and examples now stack in the main column. The desktop preset library scrolls independently on the right. At 1,024px and below, the header opens a native slide-in dialog with explicit keyboard wrapping, Escape/backdrop dismissal, restored trigger focus and locked background scrolling. Preset selection closes the drawer and focuses the editor. Opening/closing the library preserves the description and playground state.
+
+Updated verification: all 28 browser tests pass on port 3107, including independent sidebar scrolling and tablet/mobile drawer flows; all 54 unit/API tests pass after syncing the final tokenizer review fix. TypeScript, production build, Prettier and CRLF pass. Updated actual-app viewport screenshots are in ignored output/playwright/layout-desktop.png, layout-mobile.png and layout-drawer.png. No live Groq credential was available; generation browser tests use provider fixtures, while the real API route has unit coverage. No deployment was performed.

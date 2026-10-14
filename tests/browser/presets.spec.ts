@@ -34,8 +34,10 @@ test("reaches the library from navigation without losing playground edits", asyn
 }) => {
   await page.goto("/");
   await page.getByLabel("Regular expression").fill("my-work");
-  await page.getByRole("link", { name: "Preset library" }).click();
-  await expect(page).toHaveURL(/#preset-library$/);
+  await page
+    .getByRole("button", { name: "Preset library", exact: true })
+    .click();
+  await expect(page.getByLabel("Search presets")).toBeFocused();
   await expect(page.getByLabel("Regular expression")).toHaveValue("my-work");
   await expect(
     page.getByRole("region", { name: "Preset library" }),

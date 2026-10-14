@@ -3,8 +3,10 @@ import { PRESETS, PRESET_CATEGORIES, type Preset } from "@/lib/presets";
 import styles from "./preset-library.module.css";
 export function PresetLibrary({
   onSelect,
+  idPrefix = "preset",
 }: {
   onSelect: (preset: Preset) => void;
+  idPrefix?: string;
 }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
@@ -17,7 +19,7 @@ export function PresetLibrary({
   );
   return (
     <section
-      id="preset-library"
+      id={`${idPrefix}-library`}
       tabIndex={-1}
       className={`panel ${styles.library}`}
       aria-label="Preset library"
@@ -33,7 +35,7 @@ export function PresetLibrary({
         <label>
           Search presets
           <input
-            id="preset-search"
+            id={`${idPrefix}-search`}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Try email or dates"

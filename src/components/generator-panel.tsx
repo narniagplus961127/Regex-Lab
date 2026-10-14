@@ -32,7 +32,7 @@ export function GeneratorPanel({
       </label>
       <textarea
         id="description"
-        rows={6}
+        rows={3}
         maxLength={2000}
         value={description}
         onChange={(event) => setDescription(event.target.value)}
