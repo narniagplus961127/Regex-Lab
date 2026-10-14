@@ -1,0 +1,135 @@
+.shell {
+  min-height: 100vh;
+}
+.header {
+  height: 76px;
+  padding: 0 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+  background: #141617;
+}
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.engine {
+  color: var(--muted);
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.libraryButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px;
+  background: #242c1e;
+  border: 1px solid #39462a;
+  border-radius: 7px;
+  color: var(--lime);
+}
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  max-width: 1600px;
+  margin: auto;
+  align-items: start;
+}
+.main {
+  min-width: 0;
+}
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border-left: 1px solid var(--border);
+  padding: 24px 18px;
+  background: #141617;
+}
+.drawer {
+  inset: 0 0 0 auto;
+  width: min(420px, calc(100% - 24px));
+  max-width: none;
+  max-height: none;
+  height: 100dvh;
+  margin: 0 0 0 auto;
+  border: 0;
+  border-left: 1px solid var(--border);
+  padding: 18px;
+  background: #141617;
+  color: #eff2eb;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.drawer::backdrop {
+  background: #000a;
+}
+.drawerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+.drawerHeader button {
+  padding: 10px;
+  color: var(--lime);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+.privacy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 18px 32px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 11px;
+}
+@media (max-width: 1024px) {
+  .columns {
+    display: block;
+  }
+  .sidebar {
+    display: none;
+  }
+  .header {
+    padding: 0 20px;
+  }
+  .engine {
+    display: none;
+  }
+}
+@media (max-width: 450px) {
+  .header {
+    padding: 0 14px;
+    height: 68px;
+  }
+  .headerActions {
+    gap: 8px;
+  }
+  .libraryButton {
+    font-size: 11px;
+    padding: 10px;
+  }
+  .header :global(.brand) {
+    font-size: 20px;
+  }
+  .header :global(.brand small) {
+    display: none;
+  }
+  .privacy {
+    padding: 18px 14px;
+    line-height: 1.6;
+  }
+}

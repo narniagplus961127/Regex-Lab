@@ -55,3 +55,36 @@
   font-size: 13px;
   line-height: 1.6;
 }
+
+.panel :global(.panel-heading) {
+  padding: 0;
+}
+.panel textarea {
+  min-height: 90px;
+}
+.label {
+  margin-top: 16px;
+}
+.panel p:last-child {
+  margin-bottom: 0;
+}
+.panel {
+  padding: 20px;
+}
+.note {
+  margin: 8px 0;
+}
+.note:empty {
+  display: none;
+}
+.privacy {
+  margin: 10px 0;
+}
+.setup {
+  margin: 10px 0;
+  padding: 10px;
+}
+.panel textarea {
+  font-size: 13px;
+  line-height: 1.5;
+}

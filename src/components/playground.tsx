@@ -1,13 +1,13 @@
 "use client";
 import { useRef, useState } from "react";
-import { Braces, FlaskConical, ShieldCheck, Terminal } from "lucide-react";
+import { Terminal } from "lucide-react";
 import { FLAG_OPTIONS, type Mode, type Example } from "@/lib/regex";
 import { useRegexTest } from "@/hooks/use-regex-test";
 import { TestEditor } from "./test-editor";
 import { MatchesView } from "./matches-view";
 import { ExampleChecks } from "./example-checks";
 import { GeneratorPanel } from "./generator-panel";
-import { PresetLibrary } from "./preset-library";
+import { WorkbenchLayout } from "./workbench-layout";
 import { PatternDetails } from "./pattern-details";
 import { type PatternExplanation } from "@/lib/pattern-export";
 export function Playground() {
@@ -15,11 +15,6 @@ export function Playground() {
   function focusEditor() {
     patternInput.current?.focus();
     patternInput.current?.scrollIntoView({ block: "center" });
-  }
-  function openLibrary(event: React.MouseEvent<HTMLAnchorElement>) {
-    event.preventDefault();
-    window.history.replaceState(null, "", "#preset-library");
-    document.getElementById("preset-search")?.focus();
   }
   const [pattern, setPattern] = useState(
     "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b",
@@ -47,208 +42,158 @@ export function Playground() {
     examples,
   });
   return (
-    <div className="app-shell">
-      <aside className="sidebar">
-        <a className="brand" href="/">
-          <span className="brand-symbol">
-            <Braces />
-          </span>
-          Regex<span>Lab</span>
-          <small>BETA</small>
-        </a>
-        <p className="sidebar-label">WORKSPACE</p>
-        <div className="nav-active">
-          <FlaskConical size={18} /> Playground <span>●</span>
+    <WorkbenchLayout
+      focusEditor={focusEditor}
+      onSelect={(preset) => {
+        focusEditor();
+        setPattern(preset.pattern);
+        setFlags(preset.flags);
+        setMode(preset.mode);
+        setText(preset.text);
+        setExamples(preset.examples.map((example) => ({ ...example })));
+        setExplanation({
+          pattern: preset.pattern,
+          flags: preset.flags,
+          mode: preset.mode,
+          summary: preset.explanation,
+          limitations: preset.limitations,
+        });
+      }}
+    >
+      <div className="workspace">
+        <div className="page-heading">
+          <div className="eyebrow">A LITTLE LESS GUESSWORK.</div>
+          <h1>
+            Make every character <em>count.</em>
+          </h1>
+          <p>
+            Write a pattern. Test your text. Find exactly what you’re looking
+            for.
+          </p>
         </div>
-        <a
-          className="text-button"
-          onClick={openLibrary}
-          href="#preset-library"
-          style={{ marginTop: 18, padding: "10px 0" }}
-        >
-          Preset library
-        </a>
-        <div className="sidebar-bottom">
-          <ShieldCheck size={20} />
-          <strong>Private by default</strong>
-          <p>Your test text stays in this browser.</p>
-        </div>
-      </aside>
-      <main>
-        <header className="topbar">
-          <span>WORKSPACE / PLAYGROUND</span>
-          <span>
-            <span className="status-dot" /> JavaScript engine
-          </span>
-        </header>
-        <nav className="mobile-nav" aria-label="Workbench navigation">
-          <a
-            href="#workbench"
-            onClick={(event) => {
-              event.preventDefault();
-              focusEditor();
-            }}
-          >
-            Playground
-          </a>
-          <a href="#preset-library" onClick={openLibrary}>
-            Preset library
-          </a>
-        </nav>
-        <div className="workspace">
-          <div className="page-heading">
-            <div className="eyebrow">A LITTLE LESS GUESSWORK.</div>
-            <h1>
-              Make every character <em>count.</em>
-            </h1>
-            <p>
-              Write a pattern. Test your text. Find exactly what you’re looking
-              for.
-            </p>
-          </div>
-          <div className="workbench" id="workbench">
-            <GeneratorPanel
-              mode={mode}
-              flags={flags}
-              examples={examples}
-              onGenerated={(generated, intent) => {
-                setPattern(generated.pattern);
-                setFlags(generated.flags);
-                setMode(intent);
-                setExplanation({
-                  pattern: generated.pattern,
-                  flags: generated.flags,
-                  mode: intent,
-                  summary: generated.explanation,
-                  limitations: generated.limitations,
-                });
-              }}
-            />{" "}
-            <div className="editor-column">
-              <section className="panel pattern-panel">
-                <div className="panel-heading">
-                  <h2>
-                    <span className="number-label">01</span>Regular expression
-                  </h2>
-                  <span className="engine-label">JAVASCRIPT</span>
-                </div>
-                <div
-                  className={`regex-input-shell ${result.error ? "has-error" : ""}`}
-                >
-                  <span>/</span>
-                  <input
-                    aria-label="Regular expression"
-                    ref={patternInput}
-                    aria-invalid={Boolean(result.error)}
-                    aria-describedby={
-                      result.error ? "pattern-error" : undefined
-                    }
-                    spellCheck={false}
-                    autoComplete="off"
-                    value={pattern}
-                    onChange={(e) => setPattern(e.target.value)}
-                    placeholder="Enter a regex pattern"
-                  />
-                  <span>/</span>
-                  <code>{flags || "—"}</code>
-                </div>
-                <div
-                  className="intent-row"
-                  role="group"
-                  aria-label="Matching intent"
-                >
-                  <button
-                    className={`flag-button ${mode === "find" ? "on" : ""}`}
-                    aria-pressed={mode === "find"}
-                    onClick={() => setMode("find")}
-                  >
-                    Find matches in text
-                  </button>
-                  <button
-                    className={`flag-button ${mode === "validate" ? "on" : ""}`}
-                    aria-pressed={mode === "validate"}
-                    onClick={() => setMode("validate")}
-                  >
-                    Validate entire input
-                  </button>
-                </div>
-                <div className="flags-row">
-                  <span>Flags</span>
-                  {FLAG_OPTIONS.map((option) => (
-                    <button
-                      key={option.flag}
-                      className={`flag-button ${flags.includes(option.flag) ? "on" : ""}`}
-                      aria-pressed={flags.includes(option.flag)}
-                      title={option.description}
-                      onClick={() =>
-                        setFlags(
-                          FLAG_OPTIONS.filter((o) =>
-                            o.flag === option.flag
-                              ? !flags.includes(o.flag)
-                              : flags.includes(o.flag),
-                          )
-                            .map((o) => o.flag)
-                            .join(""),
-                        )
-                      }
-                    >
-                      <code>{option.flag}</code>
-                      {option.name}
-                    </button>
-                  ))}
-                </div>
-                <p className="limit-note">
-                  {mode === "validate"
-                    ? "Global iteration is ignored in validation mode."
-                    : "Pattern limit: 2,000 characters. Enable global to find every match."}
-                </p>
-              </section>
-              <TestEditor
-                text={text}
-                onChange={setText}
-                result={result}
-                testing={testing}
-              />
-              <MatchesView result={result} testing={testing} />
-              <PatternDetails
-                pattern={pattern}
-                flags={flags}
-                mode={mode}
-                explanation={explanation}
-              />
-              <ExampleChecks
-                examples={examples}
-                onChange={setExamples}
-                result={result}
-                testing={testing}
-              />
-            </div>
-          </div>
-          <PresetLibrary
-            onSelect={(preset) => {
-              focusEditor();
-              setPattern(preset.pattern);
-              setFlags(preset.flags);
-              setMode(preset.mode);
-              setText(preset.text);
-              setExamples(preset.examples.map((example) => ({ ...example })));
+        <div className="workbench" id="workbench">
+          <GeneratorPanel
+            mode={mode}
+            flags={flags}
+            examples={examples}
+            onGenerated={(generated, intent) => {
+              setPattern(generated.pattern);
+              setFlags(generated.flags);
+              setMode(intent);
               setExplanation({
-                pattern: preset.pattern,
-                flags: preset.flags,
-                mode: preset.mode,
-                summary: preset.explanation,
-                limitations: preset.limitations,
+                pattern: generated.pattern,
+                flags: generated.flags,
+                mode: intent,
+                summary: generated.explanation,
+                limitations: generated.limitations,
               });
             }}
-          />
-          <footer>
-            <span>
-              <Terminal size={14} /> A small tool for better patterns.
-            </span>
-            <span>Made to match.</span>
-          </footer>
+          />{" "}
+          <div className="editor-column">
+            <section className="panel pattern-panel">
+              <div className="panel-heading">
+                <h2>
+                  <span className="number-label">01</span>Regular expression
+                </h2>
+                <span className="engine-label">JAVASCRIPT</span>
+              </div>
+              <div
+                className={`regex-input-shell ${result.error ? "has-error" : ""}`}
+              >
+                <span>/</span>
+                <input
+                  aria-label="Regular expression"
+                  ref={patternInput}
+                  aria-invalid={Boolean(result.error)}
+                  aria-describedby={result.error ? "pattern-error" : undefined}
+                  spellCheck={false}
+                  autoComplete="off"
+                  value={pattern}
+                  onChange={(e) => setPattern(e.target.value)}
+                  placeholder="Enter a regex pattern"
+                />
+                <span>/</span>
+                <code>{flags || "—"}</code>
+              </div>
+              <div
+                className="intent-row"
+                role="group"
+                aria-label="Matching intent"
+              >
+                <button
+                  className={`flag-button ${mode === "find" ? "on" : ""}`}
+                  aria-pressed={mode === "find"}
+                  onClick={() => setMode("find")}
+                >
+                  Find matches in text
+                </button>
+                <button
+                  className={`flag-button ${mode === "validate" ? "on" : ""}`}
+                  aria-pressed={mode === "validate"}
+                  onClick={() => setMode("validate")}
+                >
+                  Validate entire input
+                </button>
+              </div>
+              <div className="flags-row">
+                <span>Flags</span>
+                {FLAG_OPTIONS.map((option) => (
+                  <button
+                    key={option.flag}
+                    className={`flag-button ${flags.includes(option.flag) ? "on" : ""}`}
+                    aria-pressed={flags.includes(option.flag)}
+                    title={option.description}
+                    onClick={() =>
+                      setFlags(
+                        FLAG_OPTIONS.filter((o) =>
+                          o.flag === option.flag
+                            ? !flags.includes(o.flag)
+                            : flags.includes(o.flag),
+                        )
+                          .map((o) => o.flag)
+                          .join(""),
+                      )
+                    }
+                  >
+                    <code>{option.flag}</code>
+                    {option.name}
+                  </button>
+                ))}
+              </div>
+              <p className="limit-note">
+                {mode === "validate"
+                  ? "Global iteration is ignored in validation mode."
+                  : "Pattern limit: 2,000 characters. Enable global to find every match."}
+              </p>
+            </section>
+            <TestEditor
+              text={text}
+              onChange={setText}
+              result={result}
+              testing={testing}
+            />
+            <MatchesView result={result} testing={testing} />
+            <PatternDetails
+              pattern={pattern}
+              flags={flags}
+              mode={mode}
+              explanation={explanation}
+            />
+            <ExampleChecks
+              examples={examples}
+              onChange={setExamples}
+              result={result}
+              testing={testing}
+            />
+          </div>
         </div>
-      </main>
-    </div>
+        <footer>
+          <span>
+            <Terminal size={14} /> A small tool for better patterns.
+          </span>
+          <span>Made to match.</span>
+        </footer>
+      </div>
+    </WorkbenchLayout>
   );
 }

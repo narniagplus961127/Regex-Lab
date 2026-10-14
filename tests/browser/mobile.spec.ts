@@ -7,7 +7,7 @@ test("mobile keyboard visitor loads a preset and returns to editing and copying"
   await expect(
     page.getByRole("region", { name: "Live text playground" }),
   ).toContainText("2 matches found");
-  const libraryLink = page.getByRole("link", {
+  const libraryLink = page.getByRole("button", {
     name: "Preset library",
     exact: true,
   });
@@ -104,8 +104,7 @@ test("mobile example-guided generation supports keyboard editing, statuses and c
   await expect(
     page.getByRole("region", { name: "AI pattern generator" }),
   ).toContainText("Pattern generated. Test it in the playground.");
-  await page.getByRole("link", { name: "Playground", exact: true }).focus();
-  await page.keyboard.press("Enter");
+  await page.getByLabel("Regular expression").focus();
   await expect(page.getByLabel("Regular expression")).toBeFocused();
   await expect(
     page.getByRole("region", { name: "Example checks" }),
@@ -209,6 +208,8 @@ test("desktop keyboard tab order and mobile screenshots", async ({ page }) => {
     path: "output/playwright/mobile-workbench.png",
     fullPage: true,
   });
-  await page.getByRole("link", { name: "Preset library", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Preset library", exact: true })
+    .click();
   await page.screenshot({ path: "output/playwright/mobile-library.png" });
 });
