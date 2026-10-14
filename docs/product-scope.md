@@ -19,11 +19,11 @@
 - Users choose between finding matches and validating the entire input.
 - Users can add positive and negative examples and see which checks pass.
 - An editable playground accepts test text and updates matches as the pattern or text changes.
-- The generator sits beside the playground on desktop; the layout stacks on mobile.
+- The AI generator, regex editor, and test panel stack in the main column. Desktop presets use a scrollable right sidebar; tablet and mobile use a drawer.
 - Dark developer-tool styling with monospace regex and bright match highlights.
 - User approved beginning implementation on 2026-10-14, then requested a consolidated requirements review before continuing.
 
-## Proposed first-release acceptance criteria
+## First-release acceptance criteria
 
 1. A visitor can describe a pattern and generate a JavaScript regex with an explanation when the owner has configured a valid AI key.
 2. The owner sees actionable setup instructions when AI is not configured. Presets and testing remain usable.
@@ -37,12 +37,7 @@
 10. The interface supports keyboard interaction and adapts to desktop and mobile screens.
 11. The AI endpoint validates request sizes and applies basic usage limits.
 
-## Supporting features proposed for inclusion
-
-- Browser-local saved patterns, without accounts or cloud synchronization.
-- A compact JavaScript regex cheatsheet.
-
-## Proposed stack — awaiting consolidated confirmation
+## Confirmed stack
 
 - Next.js, React, and TypeScript.
 - Vercel hosting, subject to Hobby's personal/non-commercial restrictions and usage limits.
@@ -59,4 +54,4 @@
 
 ## Current implementation state
 
-Initial source files exist for the UI, presets, and local matching worker. The implementation is incomplete and has not been verified or deployed. Further implementation is paused for the user's consolidated requirements confirmation.
+All seven core tickets are implemented and verified. The owner has deployed RegexLab to Vercel. The canonical specification and completion evidence are maintained in the [local tracker](../.scratch/ai-regex-generator/README.md).

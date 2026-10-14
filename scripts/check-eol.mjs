@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 const files = execFileSync(
   "git",
   ["ls-files", "--cached", "--others", "--exclude-standard", "-z"],
@@ -9,6 +9,7 @@ const files = execFileSync(
   .filter(Boolean);
 const bad = [];
 for (const file of files) {
+  if (!existsSync(file)) continue;
   const bytes = readFileSync(file);
   if (bytes.includes(0)) continue;
   const content = bytes.toString("utf8");

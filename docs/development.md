@@ -4,7 +4,7 @@ A JavaScript regex playground built with Next.js 16.4 and TypeScript.
 
 ## Run locally
 
-Use Node.js 22 or newer (Node.js 24 LTS recommended for the installed AI SDK).
+Use Node.js 24.x. The project pins this major version in package.json to keep local development and Vercel consistent while allowing minor and patch updates.
 
 ```sh
 npm ci

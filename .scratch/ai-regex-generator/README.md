@@ -2,7 +2,7 @@
 
 The [specification](spec.md) is published. The user approved the seven core implementation tickets on 2026-10-14. Each has `ready-for-agent` triage status; dependency completion and permission to implement are separate from that status.
 
-Application implementation was authorized on 2026-10-14 using Next.js, TypeScript, Vercel, Groq, Prettier, and CRLF. Do not deploy. Tickets 08 and 09 are optional drafts outside the approved core release.
+Application implementation was authorized on 2026-10-14 using Next.js, TypeScript, Vercel, Groq, Prettier, and CRLF. Do not deploy.
 
 ## Approved core tickets
 
@@ -20,12 +20,9 @@ Application implementation was authorized on 2026-10-14 using Next.js, TypeScrip
 
 All seven approved core tickets are resolved on `codex/regex-integration`, including the requested stacked layout, scrollable desktop right preset sidebar, and tablet/mobile preset drawer. The final Standards and Spec reviews have no remaining findings. No deployment was performed. Live Groq generation still requires an owner-provided server credential; deterministic provider tests verify the integration without one.
 
-## Optional drafts
+## Scope
 
-- [08: Browser-local saved patterns](../../docs/ticket-drafts/08-local-saved-patterns.md).
-- [09: JavaScript regex cheatsheet](../../docs/ticket-drafts/09-regex-cheatsheet.md).
-
-These remain proposals and were not published as approved core tickets.
+On 2026-10-14, the user finalized scope as the seven completed core tickets. No additional feature tickets are planned.
 
 ## Final verification
 

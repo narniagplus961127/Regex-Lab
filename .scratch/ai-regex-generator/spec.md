@@ -6,7 +6,7 @@ Resolution: resolved
 
 Published: 2026-10-14
 
-Implementation: authorized on 2026-10-14 for the seven published core tickets. Use Next.js, TypeScript, Vercel, and Groq. Use Prettier and CRLF line endings; split components and CSS where useful. Do not deploy. Optional saved patterns and the cheatsheet remain outside the approved core scope.
+Implementation: authorized on 2026-10-14 for the seven published core tickets. Use Next.js, TypeScript, Vercel, and Groq. Use Prettier and CRLF line endings; split components and CSS where useful. Do not deploy.
 
 ## Problem Statement
 
@@ -72,13 +72,6 @@ The confirmed visual direction is a dark developer workbench with readable monos
 44. As an app owner, I want bounded requests and basic usage limits, so that accidental or repeated requests do not consume the entire quota immediately.
 45. As an app owner, I want the hosting and AI choices documented with their free-tier restrictions, so that I can decide whether they suit the intended use.
 
-The following supporting stories are proposed extras and await consolidated scope confirmation:
-
-46. As a visitor, I want to name and save a pattern locally, so that I can return to it in the same browser without an account.
-47. As a visitor, I want to reopen or delete saved patterns, so that I can maintain my collection.
-48. As a visitor, I want storage errors handled without losing access to the playground, so that I can still copy my pattern when local saving fails.
-49. As a beginner, I want a compact JavaScript regex cheatsheet, so that I can learn common syntax while editing.
-
 ## Implementation Decisions
 
 ### Confirmed product decisions
@@ -132,7 +125,7 @@ The catalogue is a practical selection rather than a measured popularity ranking
 The user confirmed the stack and implementation of all seven published core tickets on 2026-10-14. Implementation must preserve the confirmed user behavior and acceptance criteria below.
 
 - Use Next.js, React, and TypeScript, with Vercel hosting and Groq accessed through the Vercel AI SDK. The user suggested Vercel and Groq as affordable options and allowed alternatives.
-- Do not require a database for the core workflow. If approved, saved patterns use browser-local storage without cross-device synchronization.
+- Do not require a database for the core workflow.
 - Separate responsibilities into generation, local pattern evaluation, preset definitions, explanations/export, and the playground interface. Prefer the existing pattern-evaluation boundary rather than creating redundant engines.
 - A server generation interface accepts a description, matching intent, supported flags, and explicit examples. A successful response supplies a JavaScript pattern, effective flags, explanation, and relevant limitations. Failures return actionable errors without exposing credentials or provider internals.
 - Keep all AI calls on the server. Do not expose private credentials through public environment variables, browser requests, bundles, or logs.
@@ -160,7 +153,6 @@ The user approved the seven tickets containing these behavior-focused acceptance
 - Check all 20 presets through the same workflow. Each must compile as JavaScript, load its effective settings and sample text, and pass at least one positive and one negative example check. Test catalogue examples against their documented matching intent rather than assuming every preset validates whole input.
 - Verify complete-token extraction where promised: an invalid larger token must not appear valid merely because an internal fragment matches. Cover out-of-range IPv4 octets, wrong UUID versions, out-of-range time fields, unsupported phone formats, and unsupported file extensions.
 - Verify limitations in the displayed explanation agree with the pattern: basic date checks must not claim calendar validation, and email, phone, password, and file-extension recipes must not imply delivery, allocation, security, or file-content verification.
-- If saved patterns are approved, verify saving, reopening, deleting, reload persistence, and unavailable or corrupt browser storage.
 - Add narrow tests at the existing local-evaluation boundary only when they give reliable coverage of engine edge cases that are difficult to diagnose through the browser. Do not add a separate test seam for every visual component.
 - Perform a small real-provider smoke check with a configured key before claiming AI generation works end to end. If credentials are unavailable, report that verification limit explicitly.
 
@@ -182,7 +174,7 @@ The project contains initial evaluation logic, presets, a worker entry point, an
 ## Further Notes
 
 - The user confirmed all 20 presets and their required explanations, limitations, matching intent, and positive/negative example checks on 2026-10-14. The catalogue is incorporated into this specification. All seven approved core tickets and the requested layout revision are implemented.
-- Core requirements and the Next.js/TypeScript/Vercel/Groq stack are confirmed. Browser-local saving and the cheatsheet remain optional and are excluded from the seven-ticket implementation.
+- Core requirements and the Next.js/TypeScript/Vercel/Groq stack are confirmed. Scope is finalized as the seven published core tickets.
 - Existing source was an incomplete scaffold when implementation was authorized. Verify each completed ticket with its behavior-focused checks before resolving it.
 - Vercel Hobby is intended for personal, non-commercial use and has usage limits. Groq's free tier has model-specific and organization-level request/token limits. Availability and suitability must be rechecked before deployment. Sources: [Vercel Hobby](https://vercel.com/docs/plans/hobby) and [Groq rate limits](https://console.groq.com/docs/rate-limits).
 - The configured issue tracker is local Markdown under `.scratch/`, with the five default triage statuses. Setup was approved and applied on 2026-10-14. Specifications publish under the feature directory; implementation tickets publish as separate numbered files after breakdown approval. The GitHub remote is not the configured issue tracker.
