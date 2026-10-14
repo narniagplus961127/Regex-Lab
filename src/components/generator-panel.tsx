@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { Sparkles } from "lucide-react";
 import { useGeneration, type GeneratedPattern } from "@/hooks/use-generation";
-import { type Mode } from "@/lib/regex";
+import { type Mode, type Example } from "@/lib/regex";
 import styles from "./generator-panel.module.css";
 export function GeneratorPanel({
   mode,
   flags,
+  examples,
   onGenerated,
 }: {
   mode: Mode;
   flags: string;
+  examples: Example[];
   onGenerated: (result: GeneratedPattern, mode: Mode) => void;
 }) {
   const [description, setDescription] = useState("");
@@ -45,8 +47,9 @@ export function GeneratorPanel({
         </code>
       </p>
       <p className={styles.privacy}>
-        Only your description, matching intent, and flags are sent to Groq for
-        generation. Playground test text stays in your browser.
+        Current example checks are sent to Groq when you click Generate regex,
+        together with your description, matching intent, and flags. Playground
+        test text stays in your browser.
       </p>
       {configured === false && (
         <p className={styles.setup}>
@@ -60,8 +63,17 @@ export function GeneratorPanel({
           className={styles.generate}
           disabled={busy || !description.trim() || configured === false}
           onClick={() =>
-            void generate({ description, mode, flags }, (result) =>
-              onGenerated(result, mode),
+            void generate(
+              {
+                description,
+                mode,
+                flags,
+                examples: examples.map(({ text, shouldMatch }) => ({
+                  text,
+                  shouldMatch,
+                })),
+              },
+              (result) => onGenerated(result, mode),
             )
           }
         >

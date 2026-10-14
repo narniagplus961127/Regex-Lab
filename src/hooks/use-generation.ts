@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { validatePattern, type Mode } from "@/lib/regex";
+import { validatePattern, type Mode, type Example } from "@/lib/regex";
 export type GeneratedPattern = {
   pattern: string;
   flags: string;
@@ -31,7 +31,12 @@ export function useGeneration() {
     };
   }, []);
   async function generate(
-    input: { description: string; mode: Mode; flags: string },
+    input: {
+      description: string;
+      mode: Mode;
+      flags: string;
+      examples: Pick<Example, "text" | "shouldMatch">[];
+    },
     apply: (result: GeneratedPattern) => void,
   ) {
     if (controller.current) return;

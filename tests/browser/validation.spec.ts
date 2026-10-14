@@ -6,19 +6,39 @@ test("switches from finding fragments to strict whole-input validation", async (
   await page.goto("/");
   await page.getByLabel("Regular expression").fill("cat|dog");
   await page.getByLabel("Playground test text").fill("a cat");
-  await expect(page.getByRole("status")).toContainText("1 match found");
+  await expect(
+    page
+      .getByRole("region", { name: "Live text playground" })
+      .getByRole("status"),
+  ).toContainText("1 match found");
   await page.getByRole("button", { name: "Validate entire input" }).click();
-  await expect(page.getByRole("status")).toContainText("0 matches found");
+  await expect(
+    page
+      .getByRole("region", { name: "Live text playground" })
+      .getByRole("status"),
+  ).toContainText("0 matches found");
   await expect(
     page.getByText("Global iteration is ignored in validation mode."),
   ).toBeVisible();
   await page.getByLabel("Playground test text").fill("dog");
-  await expect(page.getByRole("status")).toContainText("1 match found");
+  await expect(
+    page
+      .getByRole("region", { name: "Live text playground" })
+      .getByRole("status"),
+  ).toContainText("1 match found");
   await page.getByRole("button", { name: "m Multiline", exact: true }).click();
   await page.getByLabel("Playground test text").fill("x\ndog");
-  await expect(page.getByRole("status")).toContainText("0 matches found");
+  await expect(
+    page
+      .getByRole("region", { name: "Live text playground" })
+      .getByRole("status"),
+  ).toContainText("0 matches found");
   await page.getByLabel("Playground test text").fill("dog\n");
-  await expect(page.getByRole("status")).toContainText("0 matches found");
+  await expect(
+    page
+      .getByRole("region", { name: "Live text playground" })
+      .getByRole("status"),
+  ).toContainText("0 matches found");
 });
 
 test("inspects positions and distinguishes empty from unmatched named captures", async ({
