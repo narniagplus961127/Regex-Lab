@@ -7,6 +7,7 @@ import { TestEditor } from "./test-editor";
 import { MatchesView } from "./matches-view";
 import { ExampleChecks } from "./example-checks";
 import { GeneratorPanel } from "./generator-panel";
+import { PresetLibrary } from "./preset-library";
 import { PatternDetails } from "./pattern-details";
 import { type PatternExplanation } from "@/lib/pattern-export";
 export function Playground() {
@@ -49,6 +50,13 @@ export function Playground() {
         <div className="nav-active">
           <FlaskConical size={18} /> Playground <span>●</span>
         </div>
+        <a
+          className="text-button"
+          href="#preset-library"
+          style={{ marginTop: 18, padding: "10px 0" }}
+        >
+          Preset library
+        </a>
         <div className="sidebar-bottom">
           <ShieldCheck size={20} />
           <strong>Private by default</strong>
@@ -185,6 +193,22 @@ export function Playground() {
               />
             </div>
           </div>
+          <PresetLibrary
+            onSelect={(preset) => {
+              setPattern(preset.pattern);
+              setFlags(preset.flags);
+              setMode(preset.mode);
+              setText(preset.text);
+              setExamples(preset.examples.map((example) => ({ ...example })));
+              setExplanation({
+                pattern: preset.pattern,
+                flags: preset.flags,
+                mode: preset.mode,
+                summary: preset.explanation,
+                limitations: preset.limitations,
+              });
+            }}
+          />
           <footer>
             <span>
               <Terminal size={14} /> A small tool for better patterns.
