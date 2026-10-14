@@ -14,6 +14,7 @@ export function GeneratorPanel({
   examples: Example[];
   onGenerated: (result: GeneratedPattern, mode: Mode) => void;
 }) {
+  const [generated, setGenerated] = useState(false);
   const [description, setDescription] = useState("");
   const { configured, busy, error, generate, cancel } = useGeneration();
   return (
@@ -62,7 +63,8 @@ export function GeneratorPanel({
         <button
           className={styles.generate}
           disabled={busy || !description.trim() || configured === false}
-          onClick={() =>
+          onClick={() => {
+            setGenerated(false);
             void generate(
               {
                 description,
@@ -73,9 +75,12 @@ export function GeneratorPanel({
                   shouldMatch,
                 })),
               },
-              (result) => onGenerated(result, mode),
-            )
-          }
+              (result) => {
+                onGenerated(result, mode);
+                setGenerated(true);
+              },
+            );
+          }}
         >
           <Sparkles size={16} />
           {busy ? "Generating…" : "Generate regex"}
@@ -83,7 +88,11 @@ export function GeneratorPanel({
         {busy && <button onClick={cancel}>Cancel generation</button>}
       </div>
       <p aria-live="polite" role="status" className={styles.note}>
-        {busy ? "Generating a pattern…" : ""}
+        {busy
+          ? "Generating a pattern…"
+          : generated && !error
+            ? "Pattern generated. Test it in the playground."
+            : ""}
       </p>
       {error && (
         <p role="alert" className={styles.error}>

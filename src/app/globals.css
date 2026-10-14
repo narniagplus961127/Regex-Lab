@@ -529,3 +529,44 @@ footer span:first-child {
   gap: 8px;
   margin: 20px 22px 0;
 }
+
+/* Navigation remains available when the desktop sidebar is hidden. */
+.mobile-nav {
+  display: none;
+}
+select:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 4px;
+}
+summary {
+  cursor: pointer;
+}
+.panel {
+  min-width: 0;
+}
+.error-box {
+  overflow-wrap: anywhere;
+}
+.regex-input-shell:focus-within {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
+}
+@media (max-width: 850px) {
+  .mobile-nav {
+    display: flex;
+    gap: 12px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .mobile-nav a {
+    color: var(--lime);
+    text-decoration: none;
+    padding: 10px 12px;
+    border: 1px solid #39462a;
+    border-radius: 6px;
+  }
+  .flag-button {
+    min-height: 36px;
+  }
+}
