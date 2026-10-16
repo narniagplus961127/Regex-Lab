@@ -125,6 +125,8 @@ async function readInput(request: Request) {
   }
 }
 
+const generationWindowMs = 60 * 60 * 1000;
+
 // These guards are shared by all visitors of this process, not across Vercel instances.
 let budget = { start: Date.now(), count: 0 };
 
@@ -143,13 +145,32 @@ export async function POST(request: Request) {
   try {
     const input = await readInput(request);
 
-    if (Date.now() - budget.start >= 60000)
-      budget = { start: Date.now(), count: 0 };
+    const now = Date.now();
 
-    if (budget.count >= 5 || active >= 2)
+    if (now - budget.start >= generationWindowMs)
+      budget = { start: now, count: 0 };
+
+    if (budget.count >= 5) {
+      const retryAfter = Math.ceil(
+        (generationWindowMs - (now - budget.start)) / 1000,
+      );
+
       return Response.json(
-        { error: "Generation is busy. Wait a minute and try again." },
-        { status: 429, headers: { "Retry-After": "60" } },
+        {
+          error:
+            "The hourly generation limit has been reached. Please try again later.",
+        },
+        { status: 429, headers: { "Retry-After": String(retryAfter) } },
+      );
+    }
+
+    if (active >= 2)
+      return Response.json(
+        {
+          error:
+            "Generation is busy. Wait for the current requests to finish and try again.",
+        },
+        { status: 429, headers: { "Retry-After": "5" } },
       );
 
     budget.count++;
