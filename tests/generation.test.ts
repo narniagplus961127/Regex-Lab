@@ -174,7 +174,7 @@ test("provider quota errors are safe and no retries spend extra quota", async ()
   expect(fetch).toHaveBeenCalledTimes(1);
 });
 
-test("instance budget allows five requests per hour and resets after the window", async () => {
+test("instance budget allows twenty requests per hour and resets after the window", async () => {
   let now = Date.now();
 
   vi.spyOn(Date, "now").mockImplementation(() => now);
@@ -192,17 +192,17 @@ test("instance budget allows five requests per hour and resets after the window"
       body: JSON.stringify({ description: "Digits", flags: "g", mode: "find" }),
     });
 
-  for (let n = 0; n < 5; n++)
+  for (let n = 0; n < 20; n++)
     expect((await route.POST(request())).status).toBe(502);
 
   const blocked = await route.POST(request());
 
   expect(blocked.status).toBe(429);
   expect(blocked.headers.get("Retry-After")).toBe("3600");
-  expect(fetch).toHaveBeenCalledTimes(5);
+  expect(fetch).toHaveBeenCalledTimes(20);
   now += 60000;
   expect((await route.POST(request())).status).toBe(429);
-  expect(fetch).toHaveBeenCalledTimes(5);
+  expect(fetch).toHaveBeenCalledTimes(20);
 
   now += 3539999;
   const almostReset = await route.POST(request());
@@ -211,7 +211,7 @@ test("instance budget allows five requests per hour and resets after the window"
 
   now += 1;
   expect((await route.POST(request())).status).toBe(502);
-  expect(fetch).toHaveBeenCalledTimes(6);
+  expect(fetch).toHaveBeenCalledTimes(21);
 });
 
 test("provider syntax and output bounds are checked without executing a pattern", async () => {

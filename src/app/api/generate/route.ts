@@ -150,7 +150,7 @@ export async function POST(request: Request) {
     if (now - budget.start >= generationWindowMs)
       budget = { start: now, count: 0 };
 
-    if (budget.count >= 5) {
+    if (budget.count >= 20) {
       const retryAfter = Math.ceil(
         (generationWindowMs - (now - budget.start)) / 1000,
       );
