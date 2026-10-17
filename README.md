@@ -4,6 +4,28 @@ A small tool for better patterns. Made to match.
 
 Describe what you want to match, generate a JavaScript regular expression, and test it against your own text. Start from a preset or write a pattern yourself—no account required.
 
+[Try the live demo](https://regex-lab-three.vercel.app/)
+
+## Screenshots
+
+### Desktop workbench
+
+Describe a pattern, edit the regular expression, and browse the searchable preset library beside the playground.
+
+![RegexLab desktop workbench showing the AI description input, regex editor, copy controls, and preset sidebar](docs/screenshots/desktop-workbench.png)
+
+### Live testing and capture groups
+
+Test sample order numbers, see matching text highlighted, and inspect the values extracted by a named capture group.
+
+![RegexLab playground highlighting matching order numbers and displaying their positions and named capture groups](docs/screenshots/live-playground.png)
+
+### Presets on mobile
+
+Open the preset drawer to search or filter patterns, then load one into the playground.
+
+<img src="docs/screenshots/mobile-presets.png" alt="RegexLab mobile preset drawer with search, category filters, and load pattern buttons" width="360" />
+
 ## What you can do
 
 - **Generate with AI:** explain your goal in plain language and add examples that should or should not match.
